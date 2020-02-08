@@ -18,19 +18,6 @@ CREATE SCHEMA IF NOT EXISTS `atm` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_
 USE `atm` ;
 
 -- -----------------------------------------------------
--- Table `atm`.`branch`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `atm`.`branch` (
-  `id` INT(11) NOT NULL,
-  `name` VARCHAR(45) NULL DEFAULT NULL,
-  `location` VARCHAR(45) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
-
-
--- -----------------------------------------------------
 -- Table `atm`.`account_holder`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `atm`.`account_holder` (
@@ -51,21 +38,14 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- Table `atm`.`account`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `atm`.`account` (
-  `number` INT(11) NOT NULL,
+  `account_number` INT(11) NOT NULL,
   `balance` INT(11) NULL DEFAULT NULL,
   `pin` VARCHAR(4) NULL DEFAULT NULL,
-  `branch_id` INT(11) NULL DEFAULT NULL,
-  `holder_nrc` VARCHAR(9) NOT NULL,
-  PRIMARY KEY (`number`, `holder_nrc`),
-  INDEX `branch_id_idx` (`branch_id` ASC) VISIBLE,
-  INDEX `holder_nrc_idx` (`holder_nrc` ASC) VISIBLE,
-  CONSTRAINT `branch_id`
-    FOREIGN KEY (`branch_id`)
-    REFERENCES `atm`.`branch` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
+  `holder_nrc_number` VARCHAR(9) NOT NULL,
+  PRIMARY KEY (`account_number`, `holder_nrc_number`),
+  INDEX `holder_nrc_idx` (`holder_nrc_number` ASC) VISIBLE,
   CONSTRAINT `holder_nrc`
-    FOREIGN KEY (`holder_nrc`)
+    FOREIGN KEY (`holder_nrc_number`)
     REFERENCES `atm`.`account_holder` (`nrc_number`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
@@ -75,31 +55,12 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `atm`.`address`
+-- Table `atm`.`contact_information`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `atm`.`address` (
-  `nrc_number_3` VARCHAR(9) NOT NULL,
-  `street_address` VARCHAR(45) NULL DEFAULT NULL,
-  `city` VARCHAR(45) NULL DEFAULT NULL,
-  `country` VARCHAR(45) NULL DEFAULT NULL,
-  `postal_or_zip_code` VARCHAR(10) NULL DEFAULT NULL,
-  PRIMARY KEY (`nrc_number_3`),
-  CONSTRAINT `nrc_number_3`
-    FOREIGN KEY (`nrc_number_3`)
-    REFERENCES `atm`.`account_holder` (`nrc_number`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
-
-
--- -----------------------------------------------------
--- Table `atm`.`email_address`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `atm`.`email_address` (
+CREATE TABLE IF NOT EXISTS `atm`.`contact_information` (
+  `phone_number` INT(10) NULL DEFAULT NULL,
+  `email` VARCHAR(45) NULL DEFAULT NULL,
   `nrc_number` VARCHAR(9) NOT NULL,
-  `email_address` VARCHAR(45) NULL DEFAULT NULL,
   PRIMARY KEY (`nrc_number`),
   CONSTRAINT `nrc_number`
     FOREIGN KEY (`nrc_number`)
@@ -112,28 +73,24 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `atm`.`mobile_number`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `atm`.`mobile_number` (
-  `nrc_number` VARCHAR(9) NOT NULL,
-  `mobile_number` VARCHAR(45) NULL DEFAULT NULL,
-  INDEX `nrc_number_idx` (`nrc_number` ASC) VISIBLE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
-
-
--- -----------------------------------------------------
 -- Table `atm`.`transaction`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `atm`.`transaction` (
-  `id` VARCHAR(14) NOT NULL,
-  `date` DATE NULL DEFAULT NULL,
-  `type` VARCHAR(45) NULL DEFAULT NULL,
-  `login_time` VARCHAR(45) NULL DEFAULT NULL,
-  `logout_time` VARCHAR(45) NULL DEFAULT NULL,
-  `amount` INT(11) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
+  `transaction_id` VARCHAR(14) NOT NULL,
+  `transaction_date` DATE NULL DEFAULT NULL,
+  `transaction_type` VARCHAR(45) NULL DEFAULT NULL,
+  `login_time` TIME NULL DEFAULT NULL,
+  `logout_time` TIME NULL DEFAULT NULL,
+  `withdraw_amount` INT(11) NULL DEFAULT NULL,
+  `deposit_amount` INT(11) NULL DEFAULT NULL,
+  `account_number` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`transaction_id`),
+  INDEX `account_number_idx` (`account_number` ASC) VISIBLE,
+  CONSTRAINT `account_number`
+    FOREIGN KEY (`account_number`)
+    REFERENCES `atm`.`account` (`account_number`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
