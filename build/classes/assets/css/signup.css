@@ -1,0 +1,25 @@
+/*Main Class*/
+.mainFxmlClass {
+    -fx-font-family: 'Roboto', sans-serif;
+    -fx-font-size: 13px;
+}
+
+/*Contents in Left Pane*/
+.linear-gradient{
+    -fx-background-color: linear-gradient(to top, #b06ab3, #4568dc);
+}
+
+/*Contents in Right Pane*/
+.lblCreateAccount{
+    -fx-font-size: 23px;
+    -fx-text-fill: #000000;
+}
+.createAccount{
+     -fx-background-color: #5b86e5;
+     -fx-text-fill: #ffffff;
+}
+
+.cancel{
+     -fx-background-color: #5b86e5;
+     -fx-text-fill: #ffffff;
+}

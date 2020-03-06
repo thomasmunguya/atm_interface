@@ -1,0 +1,10 @@
+/*Main Class*/
+.mainFxmlClass {
+    -fx-font-family: 'Roboto', sans-serif;
+    -fx-background-color: linear-gradient(to top, #b06ab3, #4568dc);
+}
+
+.buttons{
+     -fx-background-color: #ffffff;
+     -fx-font-size: 15px;
+}

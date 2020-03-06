@@ -1,0 +1,57 @@
+/*Main Class*/
+.mainFxmlClass {
+    -fx-font-family: 'Roboto', sans-serif;
+    -fx-font-size: 13px;
+}
+
+/*Contents in Left Pane*/
+.linear-gradient{
+    -fx-background-color: linear-gradient(to top, #b06ab3, #4568dc);
+}
+
+.lblName{
+    -fx-font-size: 23px;
+    -fx-text-fill: #ffffff;
+}
+
+.lblSlogan{
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 12px;
+}
+
+/*Contents in Right Pane*/
+.rightPane{
+    -fx-background-color: #ffffff;
+}
+
+.lblSignIn{
+    -fx-font-size: 23px;
+    -fx-text-fill: #000000;
+}
+
+.txtAccNo{
+    -fx-padding-bottom: 20;
+}
+
+.txtPin{
+    -fx-padding-bottom: 20;
+}
+
+.signinBtn{
+     -fx-background-color: #5b86e5;
+     -fx-text-fill: #ffffff;
+}
+
+.lblError{
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #000000;
+}
+
+.signupBtn{
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #000000;
+}
+
+.iconSize{
+    -fx-font-size: 23px;
+}
