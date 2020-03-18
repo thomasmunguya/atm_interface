@@ -103,7 +103,7 @@ public class loginController extends DatabaseHandler implements Initializable{
         String password = txtPin.getText();
         
         //Query
-        String sql = "SELECT * FROM User_logins WHERE username = ? and password = ?;";
+        String sql = "SELECT * FROM user_login WHERE username = ? and password = ?;";
         try {
             stmt = con.prepareStatement(sql);
             stmt.setString(1, username);
