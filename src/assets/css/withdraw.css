@@ -1,0 +1,20 @@
+/*
+ * Empty Stylesheet file.
+ */
+
+mainFxmlClass {
+    -fx-font-family: 'Roboto', sans-serif;
+    -fx-background-color: linear-gradient(to top, #b06ab3, #4568dc);
+}
+
+.actioniconSize{
+    -fx-font-size: 23px;
+}
+
+txtWithdrawAmount{
+    -fx-padding-bottom: 20;
+}
+
+#OverviewIconSize {
+    -fx-font-size: 23px;
+}

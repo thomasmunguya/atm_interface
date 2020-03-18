@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="root_vbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="650.0" style="-fx-background-color: linear-gradient(to top, #b06ab3, #4568dc);;" styleClass="mainFxmlClass" stylesheets="@withdraw.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="withdraw.WithdrawController">
+   <children>
+      <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" prefHeight="113.0" prefWidth="150.0" text="Money Withdraw">
+         <graphic>
+            <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/icons/icons8_Receive_Cash_100px.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <HBox alignment="CENTER" prefHeight="70.0" prefWidth="650.0" spacing="5.0">
+         <children>
+            <Label fx:id="lbl_withdraw_amount" styleClass="mainFxmlClass" stylesheets="@withdraw.css" text="Amount:" />
+            <TextField fx:id="tf_withdraw_amount" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="35.0" prefWidth="650.0" spacing="5.0">
+         <children>
+            <Button fx:id="bt_withdraw" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#confirmWithdraw" prefHeight="35.0" prefWidth="115.0" text="Withdraw">
+               <graphic>
+                  <ImageView fitHeight="27.0" fitWidth="27.0">
+                     <image>
+                        <Image url="@../assets/icons/icons8_cancel_96px.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="bt_cancel" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#makeFadeOutIntoOptionsView" prefHeight="35.0" prefWidth="115.0" text="Cancel">
+               <graphic>
+                  <ImageView fitHeight="27.0" fitWidth="27.0">
+                     <image>
+                        <Image url="@../assets/icons/icons8_cancel_96px.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </HBox>
+   </children>
+</VBox>
