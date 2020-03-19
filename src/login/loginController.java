@@ -1,4 +1,4 @@
-/*This is the login controller which links the login gui to its business logic*/
+//This is the login controller which links the login gui to its business logic
 package login;
 
 import java.io.IOException;
@@ -76,10 +76,10 @@ public class loginController extends DatabaseHandler implements Initializable{
     private PreparedStatement stmt = null;
     private ResultSet rs = null;
 
-    /*This is the first method to be executed when the class is initialised*/
+    //This is the first method to be executed when the class is initialised
     @Override
     public void initialize(URL location, ResourceBundle resources){
-        /*When the class is initialised the dbHandler also has to be initialised*/
+        //When the class is initialised the dbHandler also has to be initialised
         dbHandler = new DatabaseHandler();
         displayCalendar();
         //experimental method makeFadeIn();
@@ -98,16 +98,14 @@ public class loginController extends DatabaseHandler implements Initializable{
     /*Method to signIn into the db or display an error msg if an unsuccessful attempt is made
       The method has to be changed in the final project because this method was only used for testing purposes*/
     private void signIn(){
-        con = DatabaseHandler.createConnection();
-        String username = txtAccNo.getText();
-        String password = txtPin.getText();
+        con = DatabaseHandler.getConnection();
         
         //Query
-        String sql = "SELECT * FROM user_login WHERE username = ? and password = ?;";
+        String sql = "SELECT * FROM account WHERE account_number = ? and pin = ?;";
         try {
             stmt = con.prepareStatement(sql);
-            stmt.setString(1, username);
-            stmt.setString(2, password);
+            stmt.setString(1, txtAccNo.getText());
+            stmt.setString(2, txtPin.getText());
             rs = stmt.executeQuery();
             if(rs.next()) {
                 makeFadeOutIntoOptions();
@@ -120,7 +118,7 @@ public class loginController extends DatabaseHandler implements Initializable{
         }
     }
     
-    /*This method loads the Options View*/
+    //This method loads the Options View
     private void loadOptionsView(){
         try {
             AnchorPane anchorPane = FXMLLoader.<AnchorPane>load(getClass().getResource("/optionsview/optionsview.fxml"));
@@ -137,7 +135,7 @@ public class loginController extends DatabaseHandler implements Initializable{
         }
     }
     
-    /*This method loads the sign-up page*/
+    //This method loads the sign-up page
     private void loadSignUp(){
         try {
             BorderPane borderPane = FXMLLoader.<BorderPane>load(getClass().getResource("/signup/signup.fxml"));
@@ -151,11 +149,10 @@ public class loginController extends DatabaseHandler implements Initializable{
             stage.show();
         } catch (IOException ex) {
             Logger.getLogger(loginController.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
         }
     }
     
-    /*This method displays the calemdar in the top right of the login page*/
+    //This method displays the calemdar in the top right of the login page
     void displayCalendar(){
         //Display the local time with the format EEEEE, d MMMM yyyy
         LocalDate date = LocalDate.now();
@@ -164,7 +161,7 @@ public class loginController extends DatabaseHandler implements Initializable{
         dateAndTimeLbl.setText(strDate);
     }
     
-    /*A method to test using Transition animations*/
+    /*A method to test using Transition animations
     private void makeFadeIn(){
         FadeTransition fade = new FadeTransition();
         fade.setDuration(Duration.millis(500));
@@ -172,30 +169,30 @@ public class loginController extends DatabaseHandler implements Initializable{
         fade.setFromValue(0);
         fade.setToValue(1);
         fade.play();
-    }
+    }*/
     
-    /*A method to test using Transition animations into the sign-up page*/
+    //A method to test using Transition animations into the sign-up page
     private void makeFadeOutIntoSignUp(){
         FadeTransition fade = new FadeTransition();
         fade.setDuration(Duration.millis(250));
         fade.setNode(rootPane);
         fade.setFromValue(1);
         fade.setToValue(0);
-        /*Once the transition has been made load the sign-up page*/
+        //Once the transition has been made load the sign-up page
         fade.setOnFinished((ActionEvent event) -> {
                 loadSignUp();
         });
         fade.play();
     }
     
-    /*A method to test using Transition animations into the options page*/
+    //A method to test using Transition animations into the options page
     private void makeFadeOutIntoOptions(){
         FadeTransition fade = new FadeTransition();
         fade.setDuration(Duration.millis(250));
         fade.setNode(rootPane);
         fade.setFromValue(1);
         fade.setToValue(0);
-        /*Once the transition has been made load the options page*/
+        //Once the transition has been made load the options page
         fade.setOnFinished((ActionEvent event) -> {
                 loadOptionsView();
         });
