@@ -18,7 +18,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -69,7 +68,6 @@ public class loginController extends DatabaseHandler implements Initializable{
     @FXML
     private Label dateAndTimeLbl;
 
-    private Parent root;
     private Stage stage;
     private DatabaseHandler dbHandler;
     private Connection con = null;
@@ -91,7 +89,7 @@ public class loginController extends DatabaseHandler implements Initializable{
     }
 
     @FXML
-    void handleButtonClick(MouseEvent event) {
+    void loadSignUp(MouseEvent event) {
         makeFadeOutIntoSignUp();
     }
     
@@ -99,7 +97,6 @@ public class loginController extends DatabaseHandler implements Initializable{
       The method has to be changed in the final project because this method was only used for testing purposes*/
     private void signIn(){
         con = DatabaseHandler.getConnection();
-        
         //Query
         String sql = "SELECT * FROM account WHERE account_number = ? and pin = ?;";
         try {

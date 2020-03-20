@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
@@ -15,7 +14,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="720.0" styleClass="mainFxmlClass" stylesheets="@../assets/css/signup.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="signup.signupController">
+<BorderPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="720.0" styleClass="mainFxmlClass" stylesheets="@../assets/css/signup.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="signup.signupController">
    <left>
       <Pane fx:id="leftSignupPane" prefHeight="400.0" prefWidth="250.0" styleClass="linear-gradient" stylesheets="@../assets/css/signup.css" BorderPane.alignment="CENTER" />
    </left>
@@ -48,7 +47,6 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <Label prefHeight="29.0" prefWidth="83.0" text="NRC number" GridPane.rowIndex="3">
@@ -66,32 +64,27 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label contentDisplay="CENTER" prefHeight="30.0" prefWidth="149.0" text="Occupation" GridPane.rowIndex="6">
-                     <GridPane.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </GridPane.margin>
-                  </Label>
-                  <TextField styleClass="txtAccNo" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
+                  <TextField fx:id="txtNrcNumber" promptText="Enter your national registration card number" styleClass="txtAccNo" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
                      <GridPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField prefHeight="25.0" prefWidth="112.0" promptText="example@gmail.com" styleClass="txtAccNo" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4">
+                  <TextField fx:id="txtEmail" prefHeight="25.0" prefWidth="112.0" promptText="example@gmail.com" styleClass="txtAccNo" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4">
                      <GridPane.margin>
                         <Insets left="5.0" right="5.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField styleClass="txtAccNo" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="6">
+                  <TextField fx:id="txtNationality" promptText="Enter your nationality" styleClass="txtAccNo" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="6">
                      <GridPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </GridPane.margin>
                   </TextField>
-                  <DatePicker promptText="dd/mm/yyyy" styleClass="txtAccNo" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5">
+                  <DatePicker fx:id="dob" promptText="dd/mm/yyyy" styleClass="txtAccNo" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5">
                      <GridPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </GridPane.margin>
                   </DatePicker>
-                  <TextField alignment="CENTER" prefHeight="25.0" prefWidth="180.0" promptText="First name" styleClass="txtAccNo" stylesheets="@/assets/css/login.css" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <TextField fx:id="txtFirstName" alignment="CENTER" prefHeight="25.0" prefWidth="180.0" promptText="First name" styleClass="txtAccNo" stylesheets="@/assets/css/login.css" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <padding>
                         <Insets right="5.0" />
                      </padding>
@@ -99,22 +92,17 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField alignment="CENTER" promptText="Last name" styleClass="txtAccNo" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                  <TextField fx:id="txtLastName" alignment="CENTER" promptText="Last name" styleClass="txtAccNo" GridPane.columnIndex="2" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </GridPane.margin>
                   </TextField>
-                  <ChoiceBox fx:id="choiceBox" prefHeight="25.0" prefWidth="191.0" styleClass="txtAccNo" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="7">
-                     <GridPane.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </GridPane.margin>
-                  </ChoiceBox>
                   <Label prefHeight="29.0" prefWidth="83.0" text="Name" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label contentDisplay="CENTER" prefHeight="30.0" prefWidth="149.0" text="Country of Origin" GridPane.rowIndex="7">
+                  <Label contentDisplay="CENTER" prefHeight="30.0" prefWidth="149.0" text="Nationality" GridPane.rowIndex="6">
                      <GridPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </GridPane.margin>
@@ -126,12 +114,12 @@
             </GridPane>
             <AnchorPane layoutY="345.0" prefHeight="55.0" prefWidth="470.0">
                <children>
-                  <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="184.0" layoutY="-6.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="saveIcon" fitHeight="40.0" fitWidth="40.0" layoutX="184.0" layoutY="-6.0" onMouseClicked="#saveIconClick" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../assets/icons/icons8_save_96px.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="cancelIcon" fitHeight="40.0" fitWidth="40.0" layoutX="286.0" layoutY="-7.0" onMouseClicked="#handleIconClick" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="cancelIcon" fitHeight="40.0" fitWidth="40.0" layoutX="286.0" layoutY="-7.0" onMouseClicked="#cancelIconClick" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../assets/icons/icons8_cancel_96px.png" />
                      </image>

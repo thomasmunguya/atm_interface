@@ -12,7 +12,6 @@ import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
@@ -27,13 +26,14 @@ import utils.DatabaseHandler;
 import java.util.Random;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
 public class signupController implements Initializable{
 
     @FXML
-    private BorderPane borderPane;
+    private BorderPane rootPane;
 
     @FXML
     private Pane leftSignupPane;
@@ -62,11 +62,11 @@ public class signupController implements Initializable{
     @FXML
     private ImageView cancelIcon;
 
-    private static Stage window;
+    private Stage stage;
     private DatabaseHandler dbHandler;
-    private static Connection con = null;
-    private static PreparedStatement stmt = null;
-    private static ResultSet rs = null;
+    private Connection con = null;
+    private PreparedStatement stmt = null;
+    private ResultSet rs = null;
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -76,11 +76,13 @@ public class signupController implements Initializable{
     @FXML 
     void cancelIconClick(MouseEvent event) {
         makeFadeOutIntoLogin();
+        System.out.println("Cancel Button Clicked");
     }
 
     @FXML
     void saveIconClick(MouseEvent event) {
         checkEmptyFields();
+        
         String genAccNum = generateBankAccount();
         String pin = generatePin();
         
@@ -90,6 +92,7 @@ public class signupController implements Initializable{
             clearTxtFields();
             infoBox("Your Information has been saved! \n Your Bank Account Number is : " + genAccNum + " \n Your Personal Identification Number is : " + pin , "Information Saved");  
         }
+        makeFadeOutIntoLogin();
     }
 
     /*Makes the choice box display a list of countries
@@ -112,7 +115,7 @@ public class signupController implements Initializable{
     private void makeFadeOutIntoLogin(){
         FadeTransition fade = new FadeTransition();
         fade.setDuration(Duration.millis(250));
-        fade.setNode(borderPane);
+        fade.setNode(rootPane);
         fade.setFromValue(1);
         fade.setToValue(0);
         //Once the transition has been made load the login page
@@ -125,11 +128,11 @@ public class signupController implements Initializable{
     //Load the Login form
     private void loadLogin(){
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/login/login.fxml"));
+            BorderPane root = FXMLLoader.<BorderPane>load(getClass().getResource("/login/login.fxml"));
             root.getStylesheets().add(getClass().getResource("/assets/css/login.css").toExternalForm());
             Scene scene = new Scene(root, 650, 400);
-            Stage stage = (Stage) borderPane.getScene().getWindow();
-
+            
+            stage = (Stage) rootPane.getScene().getWindow();
             stage.setScene(scene);
             stage.setTitle("Log-in Page");
             stage.setResizable(false);
@@ -214,27 +217,27 @@ public class signupController implements Initializable{
     //Check to see if any of the textfields are empty
     private void checkEmptyFields(){
         if(txtNrcNumber.getText().isEmpty()){
-            showAlert(AlertType.ERROR, window, "Please enter your nrc number", "Form Error");
+            showAlert(AlertType.ERROR, stage, "Please enter your nrc number", "Form Error");
         }
         
         if(txtFirstName.getText().isEmpty()){
-            showAlert(AlertType.ERROR, window, "Please enter your first name", "Form Error");
+            showAlert(AlertType.ERROR, stage, "Please enter your first name", "Form Error");
         }
         
         if(txtLastName.getText().isEmpty()){
-            showAlert(AlertType.ERROR, window, "Please enter your last name", "Form Error");
+            showAlert(AlertType.ERROR, stage, "Please enter your last name", "Form Error");
         }
         
         if(txtEmail.getText().isEmpty()){
-            showAlert(AlertType.ERROR, window, "Please enter your e-mail", "Form Error");
+            showAlert(AlertType.ERROR, stage, "Please enter your e-mail", "Form Error");
         }
         
         if(dob.getValue() == null){
-            showAlert(AlertType.ERROR, window, "Please enter your date of birth", "Form Error");
+            showAlert(AlertType.ERROR, stage, "Please enter your date of birth", "Form Error");
         }
         
         if(txtNationality.getText().isEmpty()){
-            showAlert(AlertType.ERROR, window, "Please enter your nationality", "Form Error");
+            showAlert(AlertType.ERROR, stage, "Please enter your nationality", "Form Error");
         }
     }
     
