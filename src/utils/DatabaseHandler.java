@@ -20,12 +20,15 @@ public class DatabaseHandler {
 
     /*Default constructor to connect the db and setup any tables we are going to need in the db*/
     public DatabaseHandler(){
+        
+        
         createConnection();
-        setupLoginTable();
-        setUpAccountHolderTable();
-        setUpAccountTable();
-        setUpTransactionTable();
-        setUpContactInfoTable();
+        //setUpAccountTable();
+        //setupLoginTable();
+        //setUpAccountHolderTable();
+        
+        //setUpTransactionTable();
+        //setUpContactInfoTable();
     }
 
     /*The createConnection method returns a Connection obj and is responsiblre for creating a coonection to the db*/
@@ -112,38 +115,39 @@ public class DatabaseHandler {
     }
     
     /*this method sets up the accoun table*/
-    protected static final void setUpAccountTable() {
+    //protected static final void setUpAccountTable() {
         
         /*We save the table to a String variable*/
-        final String TABLE_NAME = "account";
+       // final String TABLE_NAME = "account";
         
-        try {
+        //try {
             /*Creating a statement to execute in our db*/
-            stmt = con.createStatement();
+            //stmt = con.createStatement();
 
             /*DatabaseMetaData Allows us to gather db meta data such as  informstion about tables, views, column types, results sets, stored procedures etc*/
-            DatabaseMetaData dbmd = con.getMetaData();
-            try (
+           // DatabaseMetaData dbmd = con.getMetaData();
+           // try (
 
               /*The folling command checks to see if there are any tables in the db with the same name as TABLE_NAME*/
-              ResultSet tables = dbmd.getTables(null, null, TABLE_NAME, null)) {
+             // ResultSet tables = dbmd.getTables(null, "atm", TABLE_NAME, null)) {
 
                 /*If there is already a table in the db with the same name as TABLE_NAME...*/
-                if(tables.next()){
-                    System.out.println("Table " + TABLE_NAME + " already exists...");
-                }
+                //if(tables.next()){
+                   // System.out.println("Table " + TABLE_NAME + " already exists...");
+               // }
                 
-                else{
+               // else{
                     /*If the table doesnt exist create a table w/ name TABLE_NAME and the following columns*/
-                    stmt.execute("CREATE TABLE " + TABLE_NAME + "("
-                            + " account_number INT(9) primary key,"
-                            + " holder_nrc_number VARCHAR(9)," +  "pin INT(4), balance INT(11)");
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+                  //  stmt.execute("CREATE TABLE " + TABLE_NAME + "("
+                    //        + " account_number INT(11) primary key,"
+                     //       + "nrc_number VARCHAR(9)," +  "pin INT(4), balance INT(11))");
+              //  }
+          //  }
+       // } catch (SQLException ex) {
+         //   Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+       // }
+            
+    //} */
     
     /*this method sets up the transaction table*/    
     protected static final void setUpTransactionTable() {
