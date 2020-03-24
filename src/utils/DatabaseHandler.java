@@ -15,7 +15,7 @@ public class DatabaseHandler {
     protected static final String DB_URL = "jdbc:mysql://localhost:3306/atm";
     protected static final String UNAME = "root";
     protected static final String PASS = "thebestdamnthingever2!";
-    protected static Connection con = null;
+    protected static Connection connnection = null;
     protected static Statement stmt = null;
 
     /*Default constructor to connect the db and setup any tables we are going to need in the db*/
@@ -24,28 +24,55 @@ public class DatabaseHandler {
         
         createConnection();
         //setUpAccountTable();
-        //setupLoginTable();
-        //setUpAccountHolderTable();
+        setupLoginTable();
+        setUpAccountHolderTable();
         
-        //setUpTransactionTable();
-        //setUpContactInfoTable();
+        setUpTransactionTable();
+        setUpContactInfoTable();
     }
 
     /*The createConnection method returns a Connection obj and is responsiblre for creating a coonection to the db*/
-    public static final Connection createConnection(){
+    /*public static final Connection createConnection(){
 
         /*load the JDBC driver and establish a connection to the database*/
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-             con = DriverManager.getConnection(DB_URL, UNAME, PASS);
-             // the following linee only for testing purposes System.out.println("Connection Succesful!");
-        }catch(ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException e){
-            return null;
+       // try{
+        //    Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+          //   con = DriverManager.getConnection(DB_URL, UNAME, PASS);
+        //     // the following linee only for testing purposes System.out.println("Connection Succesful!");
+       // }catch(ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException e){
+         //   return null;
             /*No need to close the connection once we are done because after execution exits the try-catch
             block the connection is automatically closed for us*/
+       // }
+       // return con;
+    //}
+    
+    static Connection createConnection() {
+        
+        try {
+            
+            //load the JDBC driver
+            Class.forName("com.mysql.jdbc.Driver");
+            
+            System.out.println("Driver loaded");
+            
+            //establish a connection to the database
+            Connection connection = DriverManager.getConnection
+            ("jdbc:mysql://localhost/atm", "root", "" );
+            
+            System.out.println("Database connected");
+            
+            return connection;
+            
         }
-        return con;
+        catch(Exception exception) {
+            
+            exception.printStackTrace();
+        }
+        
+        return null;
     }
+
 
     /*The folling method is a template method to setup a table within the db
       All subsiquent methods of setting up the required tables will folow the same format*/
@@ -54,10 +81,10 @@ public class DatabaseHandler {
         String TABLE_NAME = "user_login";
         try {
             /*Creating a statement to execute in our db*/
-            stmt = con.createStatement();
+            stmt = connection.createStatement();
 
             /*DatabaseMetaData Allows us to gather db meta data such as  informstion about tables, views, column types, results sets, stored procedures etc*/
-            DatabaseMetaData dbmd = con.getMetaData();
+            DatabaseMetaData dbmd = connection.getMetaData();
             try (
 
               /*The folling command checks to see if there are any tables in the db with the same name as TABLE_NAME*/
