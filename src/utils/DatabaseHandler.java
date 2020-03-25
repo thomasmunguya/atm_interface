@@ -15,63 +15,36 @@ public class DatabaseHandler {
     protected static final String DB_URL = "jdbc:mysql://localhost:3306/atm";
     protected static final String UNAME = "root";
     protected static final String PASS = "thebestdamnthingever2!";
-    protected static Connection connnection = null;
+    protected static Connection con = null;
     protected static Statement stmt = null;
 
     /*Default constructor to connect the db and setup any tables we are going to need in the db*/
     public DatabaseHandler(){
         
-        
         createConnection();
-        //setUpAccountTable();
+        setUpAccountTable();
         setupLoginTable();
         setUpAccountHolderTable();
-        
         setUpTransactionTable();
         setUpContactInfoTable();
     }
 
     /*The createConnection method returns a Connection obj and is responsiblre for creating a coonection to the db*/
-    /*public static final Connection createConnection(){
+    protected static final Connection createConnection(){
 
         /*load the JDBC driver and establish a connection to the database*/
-       // try{
-        //    Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-          //   con = DriverManager.getConnection(DB_URL, UNAME, PASS);
-        //     // the following linee only for testing purposes System.out.println("Connection Succesful!");
-       // }catch(ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException e){
-         //   return null;
+       try{
+          Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+            con = DriverManager.getConnection(DB_URL, UNAME, PASS);
+            //the following linee only for testing purposes System.out.println("Connection Succesful!");
+        }catch(ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException e){
+          return null;
             /*No need to close the connection once we are done because after execution exits the try-catch
             block the connection is automatically closed for us*/
-       // }
-       // return con;
-    //}
-    
-    static Connection createConnection() {
-        
-        try {
-            
-            //load the JDBC driver
-            Class.forName("com.mysql.jdbc.Driver");
-            
-            System.out.println("Driver loaded");
-            
-            //establish a connection to the database
-            Connection connection = DriverManager.getConnection
-            ("jdbc:mysql://localhost/atm", "root", "" );
-            
-            System.out.println("Database connected");
-            
-            return connection;
-            
-        }
-        catch(Exception exception) {
-            
-            exception.printStackTrace();
-        }
-        
-        return null;
+       }
+       return con;
     }
+    
 
 
     /*The folling method is a template method to setup a table within the db
@@ -81,10 +54,10 @@ public class DatabaseHandler {
         String TABLE_NAME = "user_login";
         try {
             /*Creating a statement to execute in our db*/
-            stmt = connection.createStatement();
+            stmt = con.createStatement();
 
             /*DatabaseMetaData Allows us to gather db meta data such as  informstion about tables, views, column types, results sets, stored procedures etc*/
-            DatabaseMetaData dbmd = connection.getMetaData();
+            DatabaseMetaData dbmd = con.getMetaData();
             try (
 
               /*The folling command checks to see if there are any tables in the db with the same name as TABLE_NAME*/
@@ -142,39 +115,39 @@ public class DatabaseHandler {
     }
     
     /*this method sets up the accoun table*/
-    //protected static final void setUpAccountTable() {
+    protected static final void setUpAccountTable() {
         
         /*We save the table to a String variable*/
-       // final String TABLE_NAME = "account";
+       final String TABLE_NAME = "account";
         
-        //try {
+        try {
             /*Creating a statement to execute in our db*/
-            //stmt = con.createStatement();
+            stmt = con.createStatement();
 
             /*DatabaseMetaData Allows us to gather db meta data such as  informstion about tables, views, column types, results sets, stored procedures etc*/
-           // DatabaseMetaData dbmd = con.getMetaData();
-           // try (
+           DatabaseMetaData dbmd = con.getMetaData();
+           try (
 
               /*The folling command checks to see if there are any tables in the db with the same name as TABLE_NAME*/
-             // ResultSet tables = dbmd.getTables(null, "atm", TABLE_NAME, null)) {
+             ResultSet tables = dbmd.getTables(null, "atm", TABLE_NAME, null)) {
 
                 /*If there is already a table in the db with the same name as TABLE_NAME...*/
-                //if(tables.next()){
-                   // System.out.println("Table " + TABLE_NAME + " already exists...");
-               // }
+                if(tables.next()){
+                    System.out.println("Table " + TABLE_NAME + " already exists...");
+               }
                 
-               // else{
+               else{
                     /*If the table doesnt exist create a table w/ name TABLE_NAME and the following columns*/
-                  //  stmt.execute("CREATE TABLE " + TABLE_NAME + "("
-                    //        + " account_number INT(11) primary key,"
-                     //       + "nrc_number VARCHAR(9)," +  "pin INT(4), balance INT(11))");
-              //  }
-          //  }
-       // } catch (SQLException ex) {
-         //   Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
-       // }
+                  stmt.execute("CREATE TABLE " + TABLE_NAME + "("
+                     + " account_number INT(11) primary key,"
+                         + "nrc_number VARCHAR(9)," +  "pin INT(4), balance INT(11))");
+               }
+           }
+        } catch (SQLException ex) {
+           Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
             
-    //} */
+    } 
     
     /*this method sets up the transaction table*/    
     protected static final void setUpTransactionTable() {
