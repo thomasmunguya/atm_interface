@@ -15,7 +15,7 @@ public class DatabaseHandler {
     protected static final String DB_URL = "jdbc:mysql://localhost:3306/atm";
     protected static final String UNAME = "root";
     protected static final String PASS = "thebestdamnthingever2!";
-    protected static Connection con = null;
+    protected static Connection con = createConnection();
     protected static Statement stmt = null;
 
     /*Default constructor to connect the db and setup any tables we are going to need in the db*/
