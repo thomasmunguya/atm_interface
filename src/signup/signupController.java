@@ -1,5 +1,6 @@
 package signup;
 
+import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -14,7 +15,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -25,10 +25,14 @@ import login.loginController;
 import utils.DatabaseHandler;
 import java.util.Random;
 import java.util.ResourceBundle;
+import javafx.beans.Observable;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextFormatter;
 
 public class signupController implements Initializable{
 
@@ -39,29 +43,32 @@ public class signupController implements Initializable{
     private Pane leftSignupPane;
 
     @FXML
-    private TextField txtNrcNumber;
+    private JFXTextField txtFirstName;
 
     @FXML
-    private TextField txtEmail;
+    private JFXTextField txtLastName;
+
+    @FXML
+    private JFXTextField txtNrcNumber;
+
+    @FXML
+    private JFXTextField txtEmail;
 
     @FXML
     private DatePicker dob;
 
     @FXML
-    private TextField txtFirstName;
+    private JFXTextField txtNationality;
 
-    @FXML
-    private TextField txtLastName;
-
-    @FXML
-    private TextField txtNationality;
-    
     @FXML
     private ImageView saveIcon;
 
     @FXML
+    private Label lblName;
+     
+    @FXML
     private ImageView cancelIcon;
-
+    
     private Stage stage;
     private DatabaseHandler dbHandler;
     private Connection con = null;
@@ -71,28 +78,33 @@ public class signupController implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         dbHandler = new DatabaseHandler();
+        addListeners();
     }
 
     @FXML 
     void cancelIconClick(MouseEvent event) {
         makeFadeOutIntoLogin();
-        System.out.println("Cancel Button Clicked");
     }
 
     @FXML
     void saveIconClick(MouseEvent event) {
-        checkEmptyFields();
+        boolean checkFields = areFieldsEmpty();
         
-        String genAccNum = generateBankAccount();
-        String pin = generatePin();
-        
-        boolean savedInfo = insertUserInfo(genAccNum, pin);
-        if(savedInfo == true){
-            System.out.println("Your Information has been saved!");
-            clearTxtFields();
-            infoBox("Your Information has been saved! \n Your Bank Account Number is : " + genAccNum + " \n Your Personal Identification Number is : " + pin , "Information Saved");  
+        if(checkFields == true){
+            saveIcon.setDisable(true);
+        }else{ 
+            saveIcon.setDisable(false);
+            
+            String genAccNum = generateBankAccount();
+            String pin = generatePin();
+            
+            boolean savedInfo = insertUserInfo(genAccNum, pin);
+            if(savedInfo == true){
+                clearTxtFields();
+                infoBox("Your Information has been saved! \n Your Bank Account Number is : " + genAccNum + " \n Your Personal Identification Number is : " + pin , "Information Saved");  
+            }
+            makeFadeOutIntoLogin();
         }
-        makeFadeOutIntoLogin();
     }
 
     /*Makes the choice box display a list of countries
@@ -146,24 +158,24 @@ public class signupController implements Initializable{
         //Create a Connection to be able to insert data into the mysql db
         con = DatabaseHandler.getConnection();
 
-        String TABLE_NAME1 = "account_holder";
+        String TABLE_NAME1 = "atm.account_holder";
         //MySQL Query
         String sql1 = "INSERT INTO " + TABLE_NAME1 + " (nrc_number, first_name, last_name, email, dob, nationality) VALUES (?,?,?,?,?,?)";
         try {
             stmt = con.prepareStatement(sql1);
-            stmt.setString(1, txtNrcNumber.getText());
-            stmt.setString(2, txtFirstName.getText());
-            stmt.setString(3, txtLastName.getText());
-            stmt.setString(4, txtEmail.getText());
+            stmt.setString(1, txtNrcNumber.getText().trim());
+            stmt.setString(2, txtFirstName.getText().trim());
+            stmt.setString(3, txtLastName.getText().trim());
+            stmt.setString(4, txtEmail.getText().trim());
             stmt.setDate(5, java.sql.Date.valueOf(dob.getValue()));
-            stmt.setString(6, txtNationality.getText());
+            stmt.setString(6, txtNationality.getText().trim());
             stmt.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(loginController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         //Before we can insert the account number into the db we need to check if the account number has already been generated
-        String sql2 = "SELECT * FROM account WHERE account_number = ?;";
+        String sql2 = "SELECT * FROM atm.account WHERE account_number = ?;";
         try {
             stmt = con.prepareStatement(sql2);
             stmt.setString(1, genAccNum);
@@ -173,14 +185,14 @@ public class signupController implements Initializable{
                 genAccNum = generateBankAccount();
             }else{
                 //Insert the generated account number and pin into the account table
-                String TABLE_NAME2 = "account";
+                String TABLE_NAME2 = "atm.account";
                 String sql3 = "INSERT INTO " + TABLE_NAME2 + " (account_number, pin, balance, holder_nrc_number) VALUES (?,?,?,?)";
                 try {
                     stmt = con.prepareStatement(sql3);
                     stmt.setString(1, genAccNum);
                     stmt.setString(2, pin);
                     stmt.setInt(3, 0);
-                    stmt.setString(4, txtNrcNumber.getText());
+                    stmt.setString(4, txtNrcNumber.getText().trim());
                     stmt.executeUpdate();
                 } catch (SQLException ex) {
                     Logger.getLogger(loginController.class.getName()).log(Level.SEVERE, null, ex);
@@ -215,32 +227,54 @@ public class signupController implements Initializable{
     }
     
     //Check to see if any of the textfields are empty
-    private void checkEmptyFields(){
-        if(txtNrcNumber.getText().isEmpty()){
-            showAlert(AlertType.ERROR, stage, "Please enter your nrc number", "Form Error");
-        }
-        
-        if(txtFirstName.getText().isEmpty()){
-            showAlert(AlertType.ERROR, stage, "Please enter your first name", "Form Error");
-        }
-        
-        if(txtLastName.getText().isEmpty()){
-            showAlert(AlertType.ERROR, stage, "Please enter your last name", "Form Error");
-        }
-        
-        if(txtEmail.getText().isEmpty()){
-            showAlert(AlertType.ERROR, stage, "Please enter your e-mail", "Form Error");
-        }
-        
-        if(dob.getValue() == null){
-            showAlert(AlertType.ERROR, stage, "Please enter your date of birth", "Form Error");
-        }
-        
-        if(txtNationality.getText().isEmpty()){
-            showAlert(AlertType.ERROR, stage, "Please enter your nationality", "Form Error");
-        }
+    private boolean areFieldsEmpty(){
+        return txtNrcNumber.getText().trim() == null || txtFirstName.getText().trim() == null || txtLastName.getText().trim() == null || txtEmail.getText().trim() == null || dob.getValue() == null || txtNationality.getText().trim() == null;
     }
     
+    //Adding listeners to all the fields on the sign up page
+    private void addListeners(){
+        
+        txtFirstName.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            if(newValue.matches("([a-zA-Z]*)?")){
+                txtFirstName.setText(newValue);
+            }else{
+                txtFirstName.setText(oldValue);
+            }
+        });
+        
+        txtLastName.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            if(newValue.matches("([a-zA-Z]*)?")){
+                txtLastName.setText(newValue);
+            }else{
+                txtLastName.setText(oldValue);
+            }
+        });
+        
+        txtNrcNumber.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            if(newValue.matches("([\\d_\\W]*)?")){
+                txtNrcNumber.setText(newValue);
+            }else{
+                txtNrcNumber.setText(oldValue);
+            }
+        });
+        
+        txtEmail.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            if(newValue.matches("([a-zA-Z_\\d_\\W]*)?")){
+                txtEmail.setText(newValue);
+            }else{
+                txtEmail.setText(oldValue);
+            }
+        });
+        
+        txtNationality.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            if(newValue.matches("([a-zA-Z]*)?")){
+                txtNationality.setText(newValue);
+            }else{
+                txtNationality.setText(oldValue);
+            }
+        });
+    }
+   
     //Clear all the fields
     private void clearTxtFields(){
         txtNrcNumber.clear();
@@ -270,3 +304,4 @@ public class signupController implements Initializable{
         alert.show();
     }
 }
+

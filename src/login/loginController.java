@@ -1,6 +1,9 @@
 //This is the login controller which links the login gui to its business logic
 package login;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -10,6 +13,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,10 +23,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -48,10 +55,10 @@ public class loginController extends DatabaseHandler implements Initializable{
     private Pane rightPane;
 
     @FXML
-    private PasswordField txtPin;
+    private JFXPasswordField txtPin;
 
     @FXML
-    private Button signinBtn;
+    private JFXButton signinBtn;
 
     @FXML
     private Label lblError;
@@ -63,7 +70,7 @@ public class loginController extends DatabaseHandler implements Initializable{
     private Label lblSignIn;
 
     @FXML
-    private TextField txtAccNo;
+    private JFXTextField txtAccNo;
 
     @FXML
     private Label dateAndTimeLbl;
@@ -98,11 +105,11 @@ public class loginController extends DatabaseHandler implements Initializable{
     private void signIn(){
         con = DatabaseHandler.getConnection();
         //Query
-        String sql = "SELECT * FROM account WHERE account_number = ? and pin = ?;";
+        String sql = "SELECT * FROM atm.account WHERE account_number = ? and pin = ?;";
         try {
             stmt = con.prepareStatement(sql);
-            stmt.setString(1, txtAccNo.getText());
-            stmt.setString(2, txtPin.getText());
+            stmt.setString(1, txtAccNo.getText().trim());
+            stmt.setString(2, txtPin.getText().trim());
             rs = stmt.executeQuery();
             if(rs.next()) {
                 makeFadeOutIntoOptions();
@@ -126,6 +133,21 @@ public class loginController extends DatabaseHandler implements Initializable{
             stage.setScene(scene);
             stage.setTitle("Options Page");
             stage.setResizable(false);
+            stage.setOnCloseRequest(e -> {
+                Alert alert = new Alert(AlertType.CONFIRMATION);
+                alert.setTitle("Exit Request");
+                alert.setHeaderText(null);
+                alert.setContentText("Äre you sure you want to close the program?");
+                
+                ButtonType okButtonType = new ButtonType("Okay", ButtonData.OK_DONE);
+                
+                Optional<ButtonType> result = alert.showAndWait();
+                if(result.isPresent() && result.get() == okButtonType){
+                    stage.close();
+                }else if (result.isPresent() && result.get() == ButtonType.CANCEL) {
+                    e.consume();
+                }
+            });
             stage.show();
         } catch (IOException e) {
             Logger.getLogger(loginController.class.getName()).log(Level.SEVERE, null, e);
@@ -143,6 +165,21 @@ public class loginController extends DatabaseHandler implements Initializable{
             stage.setScene(scene);
             stage.setTitle("Sign-Up Page");
             stage.setResizable(false);
+            stage.setOnCloseRequest(e -> {
+                Alert alert = new Alert(AlertType.CONFIRMATION);
+                alert.setTitle("Exit Request");
+                alert.setHeaderText(null);
+                alert.setContentText("Äre you sure you want to close the program?");
+                
+                ButtonType okButtonType = new ButtonType("Okay", ButtonData.OK_DONE);
+                
+                Optional<ButtonType> result = alert.showAndWait();
+                if(result.isPresent() && result.get() == okButtonType){
+                    stage.close();
+                }else if (result.isPresent() && result.get() == ButtonType.CANCEL) {
+                    e.consume();
+                }
+            });
             stage.show();
         } catch (IOException ex) {
             Logger.getLogger(loginController.class.getName()).log(Level.SEVERE, null, ex);
@@ -154,7 +191,6 @@ public class loginController extends DatabaseHandler implements Initializable{
         //Display the local time with the format EEEEE, d MMMM yyyy
         LocalDate date = LocalDate.now();
         String strDate = date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL));
-        System.out.println(strDate);
         dateAndTimeLbl.setText(strDate);
     }
     

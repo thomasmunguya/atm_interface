@@ -48,7 +48,7 @@ public class DatabaseHandler {
     //This method sets up the account holder table
     protected static final void setUpAccountHolderTable() {
         //We save the table  to a String variable
-        String TABLE_NAME = "account_holder";
+        String TABLE_NAME = "atm.account_holder";
         try {
             //Creating a statement to execute in our db
             stmt = con.createStatement();
@@ -60,7 +60,7 @@ public class DatabaseHandler {
 
                 //If there is already a table in the db with the same name as TABLE_NAME...
                 if(tables.next()){
-                    System.out.println("Table " + TABLE_NAME + " already exists...");
+                    //System.out.println("Table " + TABLE_NAME + " already exists...");
                 }else{
                     //If the table doesnt exist create a table w/ name TABLE_NAME and the following columns
                     stmt.execute("CREATE TABLE " + TABLE_NAME + "("
@@ -80,7 +80,7 @@ public class DatabaseHandler {
     //This method sets up the account table
     protected static final void setUpAccountTable() {
         //We save the table to a String variable
-        final String TABLE_NAME = "account";
+        final String TABLE_NAME = "atm.account";
         
         try {
             //Creating a statement to execute in our db
@@ -94,7 +94,7 @@ public class DatabaseHandler {
 
                 //If there is already a table in the db with the same name as TABLE_NAME...
                 if(tables.next()){
-                    System.out.println("Table " + TABLE_NAME + " already exists...");
+                    //System.out.println("Table " + TABLE_NAME + " already exists...");
                 }else{
                     //If the table doesnt exist create a table w/ name TABLE_NAME and the following columns
                     stmt.execute("CREATE TABLE " + TABLE_NAME + "("

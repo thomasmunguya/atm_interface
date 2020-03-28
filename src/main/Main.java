@@ -2,14 +2,20 @@
 package main;
 
 import java.io.IOException;
+import java.util.Optional;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-
+    
+    private Stage window;
+    
      public static void main(String[] args) {
         launch(args);
     }
@@ -30,6 +36,21 @@ public class Main extends Application {
         window.setTitle("Log-in Page");
         window.setResizable(false);
         window.centerOnScreen();
+        window.setOnCloseRequest(e -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Exit Request");
+            alert.setHeaderText(null);
+            alert.setContentText("Äre you sure you want to exit the program?");
+                
+            ButtonType okButtonType = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
+                
+            Optional<ButtonType> result = alert.showAndWait();
+            if(result.isPresent() && result.get() == okButtonType){
+                window.close();
+            }else if (result.isPresent() && result.get() == ButtonType.CANCEL) {
+                e.consume();
+            }
+            });
         window.show();
     }
 }

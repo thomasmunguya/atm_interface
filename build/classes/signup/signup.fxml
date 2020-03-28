@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -64,40 +64,7 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </GridPane.margin>
                   </Label>
-                  <TextField fx:id="txtNrcNumber" promptText="Enter your national registration card number" styleClass="txtAccNo" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
-                     <GridPane.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </GridPane.margin>
-                  </TextField>
-                  <TextField fx:id="txtEmail" prefHeight="25.0" prefWidth="112.0" promptText="example@gmail.com" styleClass="txtAccNo" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4">
-                     <GridPane.margin>
-                        <Insets left="5.0" right="5.0" />
-                     </GridPane.margin>
-                  </TextField>
-                  <TextField fx:id="txtNationality" promptText="Enter your nationality" styleClass="txtAccNo" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="6">
-                     <GridPane.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </GridPane.margin>
-                  </TextField>
-                  <DatePicker fx:id="dob" promptText="dd/mm/yyyy" styleClass="txtAccNo" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5">
-                     <GridPane.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </GridPane.margin>
-                  </DatePicker>
-                  <TextField fx:id="txtFirstName" alignment="CENTER" prefHeight="25.0" prefWidth="180.0" promptText="First name" styleClass="txtAccNo" stylesheets="@/assets/css/login.css" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                     <padding>
-                        <Insets right="5.0" />
-                     </padding>
-                     <GridPane.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </GridPane.margin>
-                  </TextField>
-                  <TextField fx:id="txtLastName" alignment="CENTER" promptText="Last name" styleClass="txtAccNo" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                     <GridPane.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </GridPane.margin>
-                  </TextField>
-                  <Label prefHeight="29.0" prefWidth="83.0" text="Name" GridPane.rowIndex="2">
+                  <Label fx:id="lblName" prefHeight="29.0" prefWidth="83.0" text="Name" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </GridPane.margin>
@@ -107,6 +74,36 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </GridPane.margin>
                   </Label>
+                  <JFXTextField fx:id="txtFirstName" alignment="CENTER" focusColor="#4568dc" labelFloat="true" promptText="First Name" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </GridPane.margin>
+                  </JFXTextField>
+                  <JFXTextField fx:id="txtLastName" alignment="CENTER" focusColor="#4568dc" labelFloat="true" promptText="Surname" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </GridPane.margin>
+                  </JFXTextField>
+                  <JFXTextField fx:id="txtNrcNumber" alignment="CENTER" focusColor="#4568dc" labelFloat="true" promptText="Enter Your National Registration Card Number" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </GridPane.margin>
+                  </JFXTextField>
+                  <JFXTextField fx:id="txtEmail" alignment="CENTER" focusColor="#4568dc" labelFloat="true" promptText="example@gmail.com" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </GridPane.margin>
+                  </JFXTextField>
+                  <JFXTextField fx:id="txtNationality" alignment="CENTER" focusColor="#4568dc" labelFloat="true" promptText="Enter Your Nationality" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="6">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </GridPane.margin>
+                  </JFXTextField>
+                  <DatePicker fx:id="dob" promptText="DD/MM/YYYY" showWeekNumbers="true" stylesheets="@../assets/css/signup.css" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </GridPane.margin>
+                  </DatePicker>
                </children>
                <padding>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
