@@ -79,8 +79,8 @@ public class signupController implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         dbHandler = new DatabaseHandler();
-        accountHolder = new AccountHolder();
         try {
+            accountHolder = new AccountHolder();
             account = new Account();
         } catch (SQLException ex) {
             Logger.getLogger(signupController.class.getName()).log(Level.SEVERE, null, ex);
