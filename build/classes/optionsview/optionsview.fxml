@@ -20,7 +20,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button contentDisplay="TOP" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" styleClass="buttons" stylesheets="@../assets/css/optionsview.css" text="Money Deposit">
+            <Button fx:id="depositBtn" contentDisplay="TOP" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#depositBtn" prefHeight="25.0" prefWidth="150.0" styleClass="buttons" stylesheets="@../assets/css/optionsview.css" text="Money Deposit">
                <graphic>
                   <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                      <image>

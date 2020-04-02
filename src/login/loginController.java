@@ -85,8 +85,8 @@ public class loginController extends DatabaseHandler implements Initializable{
     public void initialize(URL location, ResourceBundle resources){
         //When the class is initialised the dbHandler also has to be initialised
         dbHandler = new DatabaseHandler();
+        addListeners();
         displayCalendar();
-        //experimental method makeFadeIn();
     }
 
      @FXML
@@ -191,6 +191,27 @@ public class loginController extends DatabaseHandler implements Initializable{
         LocalDate date = LocalDate.now();
         String strDate = date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL));
         dateAndTimeLbl.setText(strDate);
+    }
+    
+    //Adding listeners to all the fields on the login up page
+    private void addListeners(){
+        //Add a listener to the bank account number textfield
+        txtAccNo.textProperty().addListener(((observable, oldValue, newValue) -> {
+            if(newValue.matches("([\\d]*)?")){
+                txtAccNo.setText(newValue);
+            }else{
+                txtAccNo.setText(oldValue);
+            }
+        }));
+        
+        //Add a listener to the pin passfield
+        txtPin.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.matches("([\\d]*)?")) {
+                txtPin.setText(newValue);
+            }else{
+                txtPin.setText(oldValue);
+            }
+        });
     }
     
     /*A method to test using Transition animations

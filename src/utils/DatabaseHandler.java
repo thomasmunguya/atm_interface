@@ -56,20 +56,20 @@ public class DatabaseHandler {
             DatabaseMetaData dbmd = con.getMetaData();
             try (
                 //The folling command checks to see if there are any tables in the db with the same name as TABLE_NAME
-                ResultSet tables = dbmd.getTables(null, null, TABLE_NAME, null)) {
+                ResultSet tables = dbmd.getTables(null, "atm", TABLE_NAME, null)) {
 
                 //If there is already a table in the db with the same name as TABLE_NAME...
                 if(tables.next()){
                     //System.out.println("Table " + TABLE_NAME + " already exists...");
                 }else{
                     //If the table doesnt exist create a table w/ name TABLE_NAME and the following columns
-                    stmt.execute("CREATE TABLE " + TABLE_NAME + "("
-                            + " nrc_number VARCHAR(15) primary key,"
-                            + " first_name VARCHAR(20),"
-                            + " last_name VARCHAR(20),"
+                    stmt.execute("CREATE TABLE " + TABLE_NAME
+                            + " (nrc_number VARCHAR(15) primary key,"
+                            + " first_name VARCHAR(15),"
+                            + " last_name VARCHAR(15),"
                             + " email VARCHAR(45),"
                             + " dob DATE,"
-                            + " nationality VARCHAR(45)" + ")");
+                            + " nationality VARCHAR(45))");
                 }
             }
         } catch (SQLException ex) {
@@ -90,19 +90,18 @@ public class DatabaseHandler {
             DatabaseMetaData dbmd = con.getMetaData();
             try (
                 //The folling command checks to see if there are any tables in the db with the same name as TABLE_NAME
-                ResultSet tables = dbmd.getTables(null, null, TABLE_NAME, null)) {
+                ResultSet tables = dbmd.getTables(null, "atm", TABLE_NAME, null)) {
 
                 //If there is already a table in the db with the same name as TABLE_NAME...
                 if(tables.next()){
                     //System.out.println("Table " + TABLE_NAME + " already exists...");
                 }else{
                     //If the table doesnt exist create a table w/ name TABLE_NAME and the following columns
-                    stmt.execute("CREATE TABLE " + TABLE_NAME + "("
-                            + " account_number VARCHAR(11) primary key,"
+                    stmt.execute("CREATE TABLE " + TABLE_NAME
+                            + " (account_number VARCHAR(11) primary key,"
                             + " pin VARCHAR(4),"
-                            + " balance INT(11),"
-                            + " holder_nrc_number VARCHAR(15)," 
-                            + " FOREIGN KEY(holder_nrc_number) REFERENCES account_holder(nrc_number)" + ")");
+                            + " balance DOUBLE,"
+                            + " holder_nrc_number VARCHAR(15))");
                 }
             }
         } catch (SQLException ex) {

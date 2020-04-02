@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.FadeTransition;
@@ -23,16 +24,14 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import login.loginController;
 import utils.DatabaseHandler;
-import java.util.Random;
 import java.util.ResourceBundle;
-import javafx.beans.Observable;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextFormatter;
+import utils.Account;
+import utils.AccountHolder;
 
 public class signupController implements Initializable{
 
@@ -69,6 +68,8 @@ public class signupController implements Initializable{
     @FXML
     private ImageView cancelIcon;
     
+    private Account account;
+    private AccountHolder accountHolder;
     private Stage stage;
     private DatabaseHandler dbHandler;
     private Connection con = null;
@@ -78,6 +79,12 @@ public class signupController implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         dbHandler = new DatabaseHandler();
+        accountHolder = new AccountHolder();
+        try {
+            account = new Account();
+        } catch (SQLException ex) {
+            Logger.getLogger(signupController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         addListeners();
     }
 
@@ -87,24 +94,26 @@ public class signupController implements Initializable{
     }
 
     @FXML
-    void saveIconClick(MouseEvent event) {
+    void saveIconClick(MouseEvent event) throws SQLException {
         boolean checkFields = areFieldsEmpty();
         
         if(checkFields == true){
             saveIcon.setDisable(true);
         }else{ 
             saveIcon.setDisable(false);
+            accountHolder.setNrcNumber(txtNrcNumber.getText().trim());
+            accountHolder.setFirstName(txtFirstName.getText().trim());
+            accountHolder.setLastName(txtLastName.getText().trim());
+            accountHolder.setEmail(txtEmail.getText().trim());
+            accountHolder.setDob(java.sql.Date.valueOf(dob.getValue()));
+            accountHolder.setNationality(txtNationality.getText().trim());
             
-            String genAccNum = generateBankAccount();
-            String pin = generatePin();
-            
-            boolean savedInfo = insertUserInfo(genAccNum, pin);
-            if(savedInfo == true){
-                clearTxtFields();
-                infoBox("Your Information has been saved! \n Your Bank Account Number is : " + genAccNum + " \n Your Personal Identification Number is : " + pin , "Information Saved");  
-            }
-            makeFadeOutIntoLogin();
+            account.setNrcNumber(txtNrcNumber.getText().trim());
+            infoBox("Information Saved","Your information has been saved.", "Full name : " + accountHolder.getFirstName() + " " + accountHolder.getLastName() + "\nYour Bank Account Number : " + account.getAccNumber() + "\nYour Personal Identification Number : " + account.getPin());
+            clearTxtFields();
         }
+        
+        
     }
 
     /*Makes the choice box display a list of countries
@@ -152,78 +161,6 @@ public class signupController implements Initializable{
         } catch (IOException e) {
             Logger.getLogger(loginController.class.getName()).log(Level.SEVERE, null, e);
         }
-    }
- 
-    private boolean insertUserInfo(String genAccNum, String pin){
-        //Create a Connection to be able to insert data into the mysql db
-        con = DatabaseHandler.getConnection();
-
-        String TABLE_NAME1 = "atm.account_holder";
-        //MySQL Query
-        String sql1 = "INSERT INTO " + TABLE_NAME1 + " (nrc_number, first_name, last_name, email, dob, nationality) VALUES (?,?,?,?,?,?)";
-        try {
-            stmt = con.prepareStatement(sql1);
-            stmt.setString(1, txtNrcNumber.getText().trim());
-            stmt.setString(2, txtFirstName.getText().trim());
-            stmt.setString(3, txtLastName.getText().trim());
-            stmt.setString(4, txtEmail.getText().trim());
-            stmt.setDate(5, java.sql.Date.valueOf(dob.getValue()));
-            stmt.setString(6, txtNationality.getText().trim());
-            stmt.executeUpdate();
-        } catch (SQLException ex) {
-            Logger.getLogger(loginController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        //Before we can insert the account number into the db we need to check if the account number has already been generated
-        String sql2 = "SELECT * FROM atm.account WHERE account_number = ?;";
-        try {
-            stmt = con.prepareStatement(sql2);
-            stmt.setString(1, genAccNum);
-            rs = stmt.executeQuery();
-            if(rs.next()){
-                //If the generated account number has results then generate another account number
-                genAccNum = generateBankAccount();
-            }else{
-                //Insert the generated account number and pin into the account table
-                String TABLE_NAME2 = "atm.account";
-                String sql3 = "INSERT INTO " + TABLE_NAME2 + " (account_number, pin, balance, holder_nrc_number) VALUES (?,?,?,?)";
-                try {
-                    stmt = con.prepareStatement(sql3);
-                    stmt.setString(1, genAccNum);
-                    stmt.setString(2, pin);
-                    stmt.setInt(3, 0);
-                    stmt.setString(4, txtNrcNumber.getText().trim());
-                    stmt.executeUpdate();
-                } catch (SQLException ex) {
-                    Logger.getLogger(loginController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            }catch (SQLException ex) {
-                 Logger.getLogger(loginController.class.getName()).log(Level.SEVERE, null, ex);
-            }    
-        return true;
-    }
-    
-    //A method to generate a random 11-digit integer
-    private static String generateBankAccount(){
-        Random rnd = new Random();
-        String accountNumber = "";
-        for (int i = 0; i < 11; i++) {
-            int randomNum = rnd.nextInt(10);
-            accountNumber += Integer.toString(randomNum);
-        }
-        return accountNumber;
-    }
-    
-    //A method to generate a random 4-digit integer
-    private static String generatePin(){
-        Random rnd = new Random();
-        String pin = "";
-        for (int i = 0; i < 4; i++) {
-            int randomNum = rnd.nextInt(10);
-            pin += Integer.toString(randomNum);
-        }
-        return pin;
     }
     
     //Check to see if any of the textfields are empty
@@ -286,11 +223,11 @@ public class signupController implements Initializable{
     }
     
     //Method to display an alert box to inform the user of confirmation
-    private static void infoBox(String contentText, String title){
-        Alert alert = new Alert(AlertType.CONFIRMATION);
+    private static void infoBox(String title, String header, String contentText){
+        Alert alert = new Alert(AlertType.INFORMATION);
         alert.setContentText(contentText);
         alert.setTitle(title);
-        alert.setHeaderText(null);
+        alert.setHeaderText(header);
         alert.showAndWait();
     }
     
