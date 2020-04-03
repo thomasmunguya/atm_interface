@@ -27,6 +27,7 @@ public class Account {
     private String generated_account_number;
     private String pin;
     private String balance;
+    private static Account active_account;
     
     //data fields for DB data
     private static final String NRC_COL = "nrc_number";
@@ -63,6 +64,10 @@ public class Account {
         this.account_number = storeAccountNumber(account_number);
     }
     
+    private void setAccountNumber() throws SQLException {
+        
+        active_account.account_number = this.getAccountNumber();
+    }
     public final String getNRCNumber() throws SQLException {
        
             
@@ -95,6 +100,16 @@ public class Account {
        this.balance = storeOrUpdateBalance(balance, this.account_number);
         
     } 
+    
+    public static final Account getActiveAccount() {
+        
+        return active_account;
+    }
+    
+    public static final void setActiveAccount(Account new_active_account) {
+        
+        active_account = new_active_account;
+    }
    
    
  
