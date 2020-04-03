@@ -30,6 +30,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import utils.Account;
 import utils.DatabaseHandler;
 
 public class loginController extends DatabaseHandler implements Initializable{
@@ -98,6 +99,8 @@ public class loginController extends DatabaseHandler implements Initializable{
     /*Method to signIn into the db or display an error msg if an unsuccessful attempt is made
       The method has to be changed in the final project because this method was only used for testing purposes*/
     private void signIn(){
+        
+        Account.setActiveAccount(new Account());
         con = DatabaseHandler.createConnection();
         String username = txtAccNo.getText();
         String password = txtPin.getText();
