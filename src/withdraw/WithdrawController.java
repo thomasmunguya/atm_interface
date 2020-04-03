@@ -22,6 +22,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import login.loginController;
+import utils.Account;
+import java.sql.*;
 
 
 /**
@@ -76,19 +78,26 @@ public class WithdrawController implements Initializable {
     
     
     
-    /* @FXML
-    void withdraw(AccountHolder account) {
+    @FXML
+    void withdraw() throws SQLException {
         
         double withdraw_amount = Double.parseDouble(tf_withdraw_amount.getText());
+        double current_balance = Double.parseDouble(Account.getActiveAccount().getBalance());
+        double new_balance;
         
-        if(withdraw_amount <= account.getBalance()) {
-            if(confirmWithdraw())
-                account.setBalance(account.getBalance() -= withdraw_amount);
+        if(withdraw_amount <= current_balance ) {
+            if(confirmWithdraw()) {
+                
+                new_balance = current_balance - withdraw_amount;
+                Account.getActiveAccount().setBalance("" + new_balance);
+                
+            }
+                
         }
         else
             denyWithdraw(withdraw_amount);
         
-    }*/
+    }
     
     /*prompt the user to confirm the withdraw with an alert*/
     @FXML
