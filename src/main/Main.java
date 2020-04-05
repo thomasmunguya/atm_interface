@@ -50,7 +50,7 @@ public class Main extends Application {
             }else if (result.isPresent() && result.get() == ButtonType.CANCEL) {
                 e.consume();
             }
-            });
+        });
         window.show();
     }
 }

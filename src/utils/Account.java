@@ -108,7 +108,7 @@ public class Account {
             rs = pStmt.executeQuery();
             if(rs.next()){
                 //If account number already exists then generate another account number and store it
-                //accNumber = generateAccountNumber();
+                accNumber = generateAccountNumber();
             }else{
                 String sql1 = "INSERT INTO " + TABLE_NAME + " (account_number, pin, balance, holder_nrc_number) VALUES (?,?,?,?)";
                 try {

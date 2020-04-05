@@ -79,6 +79,7 @@ public class loginController extends DatabaseHandler implements Initializable{
     private Connection con = null;
     private PreparedStatement stmt = null;
     private ResultSet rs = null;
+    public static String sucessfulAccountNo;
 
     //This is the first method to be executed when the class is initialised
     @Override
@@ -111,6 +112,7 @@ public class loginController extends DatabaseHandler implements Initializable{
             stmt.setString(2, txtPin.getText().trim());
             rs = stmt.executeQuery();
             if(rs.next()) {
+                sucessfulAccountNo = txtAccNo.getText().trim();
                 makeFadeOutIntoOptions();
             }else{
                 lblError.setTextFill(javafx.scene.paint.Color.RED);

@@ -7,7 +7,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.FadeTransition;
@@ -79,12 +78,6 @@ public class signupController implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         dbHandler = new DatabaseHandler();
-        try {
-            accountHolder = new AccountHolder();
-            account = new Account();
-        } catch (SQLException ex) {
-            Logger.getLogger(signupController.class.getName()).log(Level.SEVERE, null, ex);
-        }
         addListeners();
     }
 
@@ -100,6 +93,7 @@ public class signupController implements Initializable{
         if(checkFields == true){
             saveIcon.setDisable(true);
         }else{ 
+            accountHolder = new AccountHolder();
             saveIcon.setDisable(false);
             accountHolder.setNrcNumber(txtNrcNumber.getText().trim());
             accountHolder.setFirstName(txtFirstName.getText().trim());
@@ -108,12 +102,11 @@ public class signupController implements Initializable{
             accountHolder.setDob(java.sql.Date.valueOf(dob.getValue()));
             accountHolder.setNationality(txtNationality.getText().trim());
             
+            account = new Account();
             account.setNrcNumber(txtNrcNumber.getText().trim());
             infoBox("Information Saved","Your information has been saved.", "Full name : " + accountHolder.getFirstName() + " " + accountHolder.getLastName() + "\nYour Bank Account Number : " + account.getAccNumber() + "\nYour Personal Identification Number : " + account.getPin());
             clearTxtFields();
         }
-        
-        
     }
 
     /*Makes the choice box display a list of countries
@@ -229,16 +222,6 @@ public class signupController implements Initializable{
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.showAndWait();
-    }
-    
-    //Method to display a customised alert box to inform the user
-    private static void showAlert(AlertType alertType, Stage window, String message, String title){
-        Alert alert = new Alert(alertType);
-        alert.setContentText(message);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.initOwner(window);
-        alert.show();
     }
 }
 

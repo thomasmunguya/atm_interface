@@ -2,6 +2,7 @@ package optionsview;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -11,14 +12,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import login.loginController;
 
 public class optionsviewController implements Initializable {
 
@@ -41,12 +45,12 @@ public class optionsviewController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        makeFadeIn();
+        //makeFadeIn();
     } 
     
     @FXML
-    void depositBtn(MouseEvent event) {
-
+    void depositBtn(MouseEvent event) throws IOException {
+        loadDeposit();
     }
     
     @FXML
@@ -67,25 +71,38 @@ public class optionsviewController implements Initializable {
             stage.setResizable(false);
             stage.show();
         } catch (IOException ex) {
-            Logger.getLogger(loginController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(optionsviewController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
     //This method loads the sign-up page
-    private void loadDeposit(){
-        try {
-            BorderPane borderPane = FXMLLoader.<BorderPane>load(getClass().getResource("/login/login.fxml"));
-            borderPane.getStylesheets().add(getClass().getResource("/assets/css/login.css").toExternalForm());
-            Scene scene = new Scene(borderPane, 650, 400);
+    private void loadDeposit() throws IOException{
+        Stage window = new Stage();
+        window.initModality(Modality.APPLICATION_MODAL);
+        AnchorPane anchorPane = FXMLLoader.<AnchorPane>load(getClass().getResource("/deposit/deposit.fxml"));
+        anchorPane.getStylesheets().add(getClass().getResource("/assets/css/deposit.css").toExternalForm());
+        Scene scene = new Scene(anchorPane, 600, 400);
             
-            stage = (Stage) rootAnchorPane.getScene().getWindow();
-            stage.setScene(scene);
-            stage.setTitle("Log-in Page");
-            stage.setResizable(false);
-            stage.show();
-        } catch (IOException ex) {
-            Logger.getLogger(loginController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        window.setScene(scene);
+        window.centerOnScreen();
+        window.setTitle("Deposit");
+        window.setResizable(false);
+        window.setOnCloseRequest(e -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Exit Request");
+            alert.setHeaderText(null);
+            alert.setContentText("Äre you sure you want to exit the window?");
+                
+            ButtonType okButtonType = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
+                
+            Optional<ButtonType> result = alert.showAndWait();
+            if(result.isPresent() && result.get() == okButtonType){
+                window.close();
+            }else if (result.isPresent() && result.get() == ButtonType.CANCEL) {
+                e.consume();
+            }
+        });
+        window.show();
     }
     
     private void makeFadeIn(){
@@ -120,7 +137,11 @@ public class optionsviewController implements Initializable {
         fade.setToValue(0);
         //Once the transition has been made load the sign-up page
         fade.setOnFinished((ActionEvent event) -> {
-                loadLogin();
+            try {
+                loadDeposit();
+            } catch (IOException ex) {
+                Logger.getLogger(optionsviewController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
         fade.play();
     }
