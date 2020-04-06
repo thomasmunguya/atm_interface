@@ -11,7 +11,7 @@
    <children>
       <HBox fx:id="topHBox" alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="720.0" spacing="10.0" stylesheets="@../assets/css/login.css">
          <children>
-            <Button contentDisplay="TOP" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" styleClass="buttons" stylesheets="@../assets/css/optionsview.css" text="Money Withdraw">
+            <Button fx:id="withdrawBtn" contentDisplay="TOP" mnemonicParsing="false" onMouseClicked="#withdrawBtn" prefHeight="25.0" prefWidth="150.0" styleClass="buttons" stylesheets="@../assets/css/optionsview.css" text="Money Withdraw">
                <graphic>
                   <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                      <image>

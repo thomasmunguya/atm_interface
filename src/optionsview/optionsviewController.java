@@ -39,6 +39,9 @@ public class optionsviewController implements Initializable {
     private Button depositBtn;
     
     @FXML
+    private Button withdrawBtn;
+    
+    @FXML
     private Button cancelBtn;
 
     private Stage stage;
@@ -51,6 +54,11 @@ public class optionsviewController implements Initializable {
     @FXML
     void depositBtn(MouseEvent event) throws IOException {
         loadDeposit();
+    }
+    
+    @FXML
+    void withdrawBtn(MouseEvent event) throws IOException {
+        loadWithdraw();
     }
     
     @FXML
@@ -86,6 +94,36 @@ public class optionsviewController implements Initializable {
         window.setScene(scene);
         window.centerOnScreen();
         window.setTitle("Deposit");
+        window.setResizable(false);
+        window.setOnCloseRequest(e -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Exit Request");
+            alert.setHeaderText(null);
+            alert.setContentText("Äre you sure you want to exit the window?");
+                
+            ButtonType okButtonType = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
+                
+            Optional<ButtonType> result = alert.showAndWait();
+            if(result.isPresent() && result.get() == okButtonType){
+                window.close();
+            }else if (result.isPresent() && result.get() == ButtonType.CANCEL) {
+                e.consume();
+            }
+        });
+        window.show();
+    }
+    
+    //This method loads the sign-up page
+    private void loadWithdraw() throws IOException{
+        Stage window = new Stage();
+        window.initModality(Modality.APPLICATION_MODAL);
+        AnchorPane anchorPane = FXMLLoader.<AnchorPane>load(getClass().getResource("/withdraw/withdraw.fxml"));
+        anchorPane.getStylesheets().add(getClass().getResource("/assets/css/withdraw.css").toExternalForm());
+        Scene scene = new Scene(anchorPane, 600, 400);
+            
+        window.setScene(scene);
+        window.centerOnScreen();
+        window.setTitle("Withdraw");
         window.setResizable(false);
         window.setOnCloseRequest(e -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

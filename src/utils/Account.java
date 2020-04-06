@@ -45,7 +45,6 @@ public class Account {
         return nrcNumber;
     }
 
-    
     public void setNrcNumber(String nrcNumber) throws SQLException{
         this.nrcNumber = storeOrUpdateNRCNumber(nrcNumber, this.accNumber);
     }

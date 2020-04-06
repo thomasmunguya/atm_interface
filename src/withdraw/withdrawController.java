@@ -1,5 +1,11 @@
-package deposit;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package withdraw;
 
+import deposit.depositController;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,21 +23,22 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-import utils.Account;
 import login.loginController;
+import utils.Account;
 import utils.DatabaseHandler;
- 
+
 /**
- * @author DividedByZeRo
+ * FXML Controller class
+ *
+ * @author ZeRo
  */
-public class depositController implements Initializable {
-    
+public class withdrawController implements Initializable {
+
     @FXML
     private AnchorPane anchorPane;
 
     @FXML
-    private Label lblDeposit;
+    private Label lblWithdraw;
 
     @FXML
     private Label lblAccInfo;
@@ -49,9 +56,8 @@ public class depositController implements Initializable {
     private Button cancelBtn;
 
     @FXML
-    private TextField txtDepositAmount;
-    
-    Stage stage;
+    private TextField txtWithdrawAmount;
+
     private Account account;
     private loginController login;
     DatabaseHandler dbhandler;
@@ -64,23 +70,23 @@ public class depositController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try {
             setAccountInfo();
-        }catch(SQLException ex) {
-            Logger.getLogger(depositController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(withdrawController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        dbhandler = new DatabaseHandler();
         addListeners();
-    }    
+    }
     
     @FXML
     void confirmBox(MouseEvent event) throws SQLException {
+        
         boolean checkFields = areFieldsEmpty();
         
         if(checkFields == true){
-            txtDepositAmount.setDisable(true);
+            txtWithdrawAmount.setDisable(true);
         }else{
-            txtDepositAmount.setDisable(false);
+            txtWithdrawAmount.setDisable(false);
             updateBalance();
-            txtDepositAmount.clear();
+            txtWithdrawAmount.clear();
         }
     }
     
@@ -112,7 +118,7 @@ public class depositController implements Initializable {
         con = DatabaseHandler.getConnection();
         
         //Query
-        String sql = "UPDATE atm.account SET balance = balance + " + txtDepositAmount.getText().trim() + " WHERE account_number = '" + loginController.sucessfulAccountNo + "'";
+        String sql = "UPDATE atm.account SET balance = balance - " + txtWithdrawAmount.getText().trim() + " WHERE account_number = '" + loginController.sucessfulAccountNo + "'";
         try {
             stmt = con.createStatement();
             stmt.executeUpdate(sql);
@@ -120,22 +126,22 @@ public class depositController implements Initializable {
         } catch (SQLException ex) {
             Logger.getLogger(depositController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        infoBox("Ammount Deposited", "Your deposit has been succesful!", "You have successfully deposited " + txtDepositAmount.getText().trim() + " Kwacha into Account Number : " + loginController.sucessfulAccountNo);
+        infoBox("Ammount Withdrawn", "Your withdraw has been succesful!", "You have successfully deposited " + txtWithdrawAmount.getText().trim() + " Kwacha into Account Number : " + loginController.sucessfulAccountNo);
     }
     
-    //Add listeners to the deposit text field
+    //Add listeners to the withdraw text field
     private void addListeners(){
-        txtDepositAmount.textProperty().addListener((observable, oldValue, newValue) -> {
+        txtWithdrawAmount.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.matches("([1-9][0-9]*)?")) {
-                txtDepositAmount.setText(newValue);
+                txtWithdrawAmount.setText(newValue);
             } else {
-                txtDepositAmount.setText(oldValue);
+                txtWithdrawAmount.setText(oldValue);
             }
         });    
-    }
+    }    
     
     private boolean areFieldsEmpty(){
-        return txtDepositAmount.getText().trim() == null;
+        return txtWithdrawAmount.getText().trim() == null;
     }
     
     //Method to display an alert box to inform the user of confirmation
