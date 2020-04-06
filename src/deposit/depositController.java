@@ -23,7 +23,9 @@ import login.loginController;
 import utils.DatabaseHandler;
  
 /**
+ * 
  * @author DividedByZeRo
+ * 
  */
 public class depositController implements Initializable {
     
@@ -76,9 +78,9 @@ public class depositController implements Initializable {
         boolean checkFields = areFieldsEmpty();
         
         if(checkFields == true){
-            txtDepositAmount.setDisable(true);
+            confirmBtn.setDisable(true);
         }else{
-            txtDepositAmount.setDisable(false);
+            confirmBtn.setDisable(false);
             updateBalance();
             txtDepositAmount.clear();
         }
@@ -120,7 +122,7 @@ public class depositController implements Initializable {
         } catch (SQLException ex) {
             Logger.getLogger(depositController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        infoBox("Ammount Deposited", "Your deposit has been succesful!", "You have successfully deposited " + txtDepositAmount.getText().trim() + " Kwacha into Account Number : " + loginController.sucessfulAccountNo);
+        infoBox("Ammount Deposited", "Your deposit has been succesful!", "You have successfully deposited K" + txtDepositAmount.getText().trim() + " into Account Number : " + loginController.sucessfulAccountNo);
     }
     
     //Add listeners to the deposit text field

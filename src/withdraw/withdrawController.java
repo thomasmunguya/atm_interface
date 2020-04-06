@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package withdraw;
 
 import deposit.depositController;
@@ -28,9 +23,9 @@ import utils.Account;
 import utils.DatabaseHandler;
 
 /**
- * FXML Controller class
  *
- * @author ZeRo
+ * @author DividedByZeRo
+ * 
  */
 public class withdrawController implements Initializable {
 
@@ -78,13 +73,12 @@ public class withdrawController implements Initializable {
     
     @FXML
     void confirmBox(MouseEvent event) throws SQLException {
-        
         boolean checkFields = areFieldsEmpty();
         
         if(checkFields == true){
-            txtWithdrawAmount.setDisable(true);
+            confirmBtn.setDisable(true);
         }else{
-            txtWithdrawAmount.setDisable(false);
+            confirmBtn.setDisable(false);
             updateBalance();
             txtWithdrawAmount.clear();
         }
@@ -109,7 +103,7 @@ public class withdrawController implements Initializable {
                 lblAccNo.setText(loginController.sucessfulAccountNo);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(depositController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(withdrawController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -124,9 +118,9 @@ public class withdrawController implements Initializable {
             stmt.executeUpdate(sql);
             con.close();
         } catch (SQLException ex) {
-            Logger.getLogger(depositController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(withdrawController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        infoBox("Ammount Withdrawn", "Your withdraw has been succesful!", "You have successfully deposited " + txtWithdrawAmount.getText().trim() + " Kwacha into Account Number : " + loginController.sucessfulAccountNo);
+        infoBox("Ammount Withdrawn", "Your withdraw has been succesful!", "You have successfully withdrawn K" + txtWithdrawAmount.getText().trim() + " into Account Number : " + loginController.sucessfulAccountNo);
     }
     
     //Add listeners to the withdraw text field
@@ -140,6 +134,7 @@ public class withdrawController implements Initializable {
         });    
     }    
     
+    //Check if fields are empty
     private boolean areFieldsEmpty(){
         return txtWithdrawAmount.getText().trim() == null;
     }

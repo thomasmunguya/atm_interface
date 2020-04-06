@@ -29,7 +29,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button contentDisplay="TOP" layoutX="62.0" layoutY="10.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" styleClass="buttons" stylesheets="@../assets/css/optionsview.css" text="Balance Transfer">
+            <Button fx:id="balanceTransferBtn" contentDisplay="TOP" layoutX="62.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#balanceTransferBtn" prefHeight="25.0" prefWidth="150.0" styleClass="buttons" stylesheets="@../assets/css/optionsview.css" text="Balance Transfer">
                <graphic>
                   <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                      <image>
