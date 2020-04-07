@@ -13,7 +13,7 @@
          <children>
             <Button fx:id="withdrawBtn" contentDisplay="TOP" mnemonicParsing="false" onMouseClicked="#withdrawBtn" prefHeight="25.0" prefWidth="150.0" styleClass="buttons" stylesheets="@../assets/css/optionsview.css" text="Money Withdraw">
                <graphic>
-                  <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="80.0" fitWidth="80.0" onMouseClicked="#withdrawBtn" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../assets/icons/icons8_Receive_Cash_100px.png" />
                      </image>
@@ -22,7 +22,7 @@
             </Button>
             <Button fx:id="depositBtn" contentDisplay="TOP" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#depositBtn" prefHeight="25.0" prefWidth="150.0" styleClass="buttons" stylesheets="@../assets/css/optionsview.css" text="Money Deposit">
                <graphic>
-                  <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="80.0" fitWidth="80.0" onMouseClicked="#depositBtn" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../assets/icons/icons8_cash_in_hand_100px.png" />
                      </image>
@@ -31,7 +31,7 @@
             </Button>
             <Button fx:id="balanceTransferBtn" contentDisplay="TOP" layoutX="62.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#balanceTransferBtn" prefHeight="25.0" prefWidth="150.0" styleClass="buttons" stylesheets="@../assets/css/optionsview.css" text="Balance Transfer">
                <graphic>
-                  <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="80.0" fitWidth="80.0" onMouseClicked="#balanceTransferBtn" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../assets/icons/icons8_money_transfer_100px.png" />
                      </image>
@@ -45,9 +45,9 @@
       </HBox>
       <HBox fx:id="botHBox" alignment="TOP_CENTER" layoutY="200.0" prefHeight="200.0" prefWidth="720.0" spacing="10.0">
          <children>
-            <Button contentDisplay="TOP" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" styleClass="buttons" stylesheets="@../assets/css/optionsview.css" text="Balance Enquiry">
+            <Button fx:id="balanceInquiryBtn" contentDisplay="TOP" mnemonicParsing="false" onMouseClicked="#balanceInquiryBtn" prefHeight="25.0" prefWidth="150.0" styleClass="buttons" stylesheets="@../assets/css/optionsview.css" text="Balance Enquiry">
                <graphic>
-                  <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="80.0" fitWidth="80.0" onMouseClicked="#balanceInquiryBtn" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../assets/icons/icons8_Bill_100px.png" />
                      </image>

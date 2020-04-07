@@ -181,7 +181,7 @@ public class Account {
         
         Random rnd = new Random();
         String account_number = "";
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 11; i++) {
             int random_number = rnd.nextInt(10);
             account_number += Integer.toString(random_number);
         }

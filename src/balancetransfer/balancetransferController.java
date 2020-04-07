@@ -6,6 +6,8 @@
 package balancetransfer;
 
 import deposit.depositController;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,6 +22,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -107,7 +111,7 @@ public class balancetransferController implements Initializable {
     //Add listeners to the recipient and amount text fields
     private void addListeners(){
         txtRecipientAcc.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.matches("([\\d]*)?")) {
+            if (newValue.matches("\\d{0,11}")) {
                 txtRecipientAcc.setText(newValue);
             } else {
                 txtRecipientAcc.setText(oldValue);
@@ -115,7 +119,7 @@ public class balancetransferController implements Initializable {
         });  
         
         txtTransferAmount.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.matches("([1-9][0-9]*)?")) {
+            if (newValue.matches("\\d{0,11}([\\.]\\d{0,2})?")) {
                 txtTransferAmount.setText(newValue);
             } else {
                 txtTransferAmount.setText(oldValue);
@@ -158,7 +162,13 @@ public class balancetransferController implements Initializable {
                     stmt = con.createStatement();
                     stmt.executeUpdate(sql1);
                 } catch (SQLException ex) {
-                    Logger.getLogger(withdrawController.class.getName()).log(Level.SEVERE, null, ex);
+                    StringWriter sw = new StringWriter();
+                    ex.printStackTrace(new PrintWriter(sw));
+            
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setHeaderText("Your Withdraw Request Caused An Error!");
+                    alert.getDialogPane().setExpandableContent(new ScrollPane(new TextArea(sw.toString())));
+                    alert.showAndWait();
                 }
         
                 //Query
@@ -168,14 +178,26 @@ public class balancetransferController implements Initializable {
                     stmt.executeUpdate(sql2);
                     con.close();
                 }catch (SQLException ex) {
-                    Logger.getLogger(balancetransferController.class.getName()).log(Level.SEVERE, null, ex);
+                    StringWriter sw = new StringWriter();
+                    ex.printStackTrace(new PrintWriter(sw));
+            
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setHeaderText("Your Withdraw Request Caused An Error!");
+                    alert.getDialogPane().setExpandableContent(new ScrollPane(new TextArea(sw.toString())));
+                    alert.showAndWait();
                 }
-            }    
+            } 
+            
+            infoBox("Amount Transfered", "Your balance has been successfully transfered!", "You have successfully transfered K" + txtTransferAmount.getText().trim() + " from Account Number : " + loginController.sucessfulAccountNo + " into Account Number : " + txtRecipientAcc.getText().trim());
         } catch (SQLException e) {
-            Logger.getLogger(balancetransferController.class.getName()).log(Level.SEVERE, null, e);
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Your Balance Transfer Request Caused An Error!");
+            alert.getDialogPane().setExpandableContent(new ScrollPane(new TextArea(sw.toString())));
+            alert.showAndWait();
         }
-        
-        infoBox("Amount Transfered", "Your balance has been successfully transfered!", "You have successfully transfered K" + txtTransferAmount.getText().trim() + " from Account Number : " + loginController.sucessfulAccountNo + " into Account Number : " + txtRecipientAcc.getText().trim());
     }
     
     //Check if fields are empty

@@ -1,0 +1,21 @@
+/*Main Class*/
+.mainFxmlClass {
+    -fx-font-family: 'Roboto', sans-serif;
+    -fx-font-size: 13px;
+    -fx-background-color: linear-gradient(to top, #b06ab3, #4568dc);
+}
+
+.lblBalanceInquiry{
+    -fx-font-size: 23px;
+    -fx-text-fill: #ffffff;
+}
+
+.lblAccountInformation{
+    -fx-font-size: 15px;
+    -fx-text-fill: #ffffff;
+}
+
+.button{
+     -fx-background-color: #ffffff;
+     -fx-text-fill: #000000;
+}

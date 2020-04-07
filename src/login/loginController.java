@@ -199,7 +199,7 @@ public class loginController extends DatabaseHandler implements Initializable{
     private void addListeners(){
         //Add a listener to the bank account number textfield
         txtAccNo.textProperty().addListener(((observable, oldValue, newValue) -> {
-            if(newValue.matches("([\\d]*)?")){
+            if(newValue.matches("\\d{0,11}")){
                 txtAccNo.setText(newValue);
             }else{
                 txtAccNo.setText(oldValue);
@@ -208,7 +208,7 @@ public class loginController extends DatabaseHandler implements Initializable{
         
         //Add a listener to the pin passfield
         txtPin.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.matches("([\\d]*)?")) {
+            if (newValue.matches("\\d{0,4}?")) {
                 txtPin.setText(newValue);
             }else{
                 txtPin.setText(oldValue);

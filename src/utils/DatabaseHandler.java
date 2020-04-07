@@ -100,7 +100,7 @@ public class DatabaseHandler {
                     stmt.execute("CREATE TABLE " + TABLE_NAME
                             + " (account_number VARCHAR(11) primary key,"
                             + " pin VARCHAR(4),"
-                            + " balance DOUBLE,"
+                            + " balance DOUBLE UNSIGNED,"
                             + " holder_nrc_number VARCHAR(15))");
                 }
             }

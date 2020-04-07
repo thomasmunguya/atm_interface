@@ -10,6 +10,11 @@
 }
 
 /*Contents in Right Pane*/
+.rightPane{
+    -fx-background-color: #ffffff;
+}
+
+/*Contents in Right Pane*/
 .lblCreateAccount{
     -fx-font-size: 23px;
     -fx-text-fill: #000000;

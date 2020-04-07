@@ -70,6 +70,11 @@ public class optionsviewController implements Initializable {
     }
     
     @FXML
+    void balanceInquiryBtn(MouseEvent event)  throws IOException {
+        loadBalanceInquiry();
+    }
+    
+    @FXML
     void cancelButton(MouseEvent event) {
         makeFadeOutIntoloadLogin();
     }
@@ -151,7 +156,7 @@ public class optionsviewController implements Initializable {
         window.show();
     }
     
-    //This method loads the withdraw page
+    //This method loads the balance transfer page
     private void loadBalanceTransfer() throws IOException{
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
@@ -162,6 +167,36 @@ public class optionsviewController implements Initializable {
         window.setScene(scene);
         window.centerOnScreen();
         window.setTitle("Balance Transfer");
+        window.setResizable(false);
+        window.setOnCloseRequest(e -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Exit Request");
+            alert.setHeaderText(null);
+            alert.setContentText("Äre you sure you want to exit the window?");
+                
+            ButtonType okButtonType = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
+                
+            Optional<ButtonType> result = alert.showAndWait();
+            if(result.isPresent() && result.get() == okButtonType){
+                window.close();
+            }else if (result.isPresent() && result.get() == ButtonType.CANCEL) {
+                e.consume();
+            }
+        });
+        window.show();
+    }
+    
+    //This method loads the balance inquiry page
+    private void loadBalanceInquiry() throws IOException{
+        Stage window = new Stage();
+        window.initModality(Modality.APPLICATION_MODAL);
+        AnchorPane anchorPane = FXMLLoader.<AnchorPane>load(getClass().getResource("/balanceinquiry/balanceinquiry.fxml"));
+        anchorPane.getStylesheets().add(getClass().getResource("/assets/css/balanceinquiry.css").toExternalForm());
+        Scene scene = new Scene(anchorPane, 600, 400);
+            
+        window.setScene(scene);
+        window.centerOnScreen();
+        window.setTitle("Balance Inquiry");
         window.setResizable(false);
         window.setOnCloseRequest(e -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

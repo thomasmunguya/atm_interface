@@ -1,6 +1,8 @@
 package withdraw;
 
 import deposit.depositController;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,6 +17,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -117,16 +121,22 @@ public class withdrawController implements Initializable {
             stmt = con.createStatement();
             stmt.executeUpdate(sql);
             con.close();
+            infoBox("Ammount Withdrawn", "Your withdraw has been succesful!", "You have successfully withdrawn K" + txtWithdrawAmount.getText().trim() + " into Account Number : " + loginController.sucessfulAccountNo);
         } catch (SQLException ex) {
-            Logger.getLogger(withdrawController.class.getName()).log(Level.SEVERE, null, ex);
+            StringWriter sw = new StringWriter();
+            ex.printStackTrace(new PrintWriter(sw));
+            
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Your Withdraw Request Caused An Error!");
+            alert.getDialogPane().setExpandableContent(new ScrollPane(new TextArea(sw.toString())));
+            alert.showAndWait();
         }
-        infoBox("Ammount Withdrawn", "Your withdraw has been succesful!", "You have successfully withdrawn K" + txtWithdrawAmount.getText().trim() + " into Account Number : " + loginController.sucessfulAccountNo);
     }
     
     //Add listeners to the withdraw text field
     private void addListeners(){
         txtWithdrawAmount.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.matches("([1-9][0-9]*)?")) {
+            if (newValue.matches("\\d{0,11}([\\.]\\d{0,2})?")) {
                 txtWithdrawAmount.setText(newValue);
             } else {
                 txtWithdrawAmount.setText(oldValue);

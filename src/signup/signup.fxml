@@ -19,7 +19,7 @@
       <Pane fx:id="leftSignupPane" prefHeight="400.0" prefWidth="250.0" styleClass="linear-gradient" stylesheets="@../assets/css/signup.css" BorderPane.alignment="CENTER" />
    </left>
    <center>
-      <Pane prefHeight="386.0" prefWidth="374.0" styleClass="mainFxmlClass" stylesheets="@../assets/css/signup.css" BorderPane.alignment="CENTER">
+      <Pane prefHeight="386.0" prefWidth="374.0" styleClass="rightPane" stylesheets="@../assets/css/signup.css" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="CENTER" layoutX="-2.0" layoutY="21.0" prefHeight="60.0" prefWidth="470.0">
                <children>

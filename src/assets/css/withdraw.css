@@ -14,3 +14,8 @@
     -fx-font-size: 15px;
     -fx-text-fill: #ffffff;
 }
+
+.buttons{
+     -fx-background-color: #ffffff;
+     -fx-text-fill: #000000;
+}

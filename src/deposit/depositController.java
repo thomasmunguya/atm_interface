@@ -1,5 +1,7 @@
 package deposit;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,6 +16,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -119,16 +123,22 @@ public class depositController implements Initializable {
             stmt = con.createStatement();
             stmt.executeUpdate(sql);
             con.close();
+            infoBox("Ammount Deposited", "Your deposit has been succesful!", "You have successfully deposited K" + txtDepositAmount.getText().trim() + " into Account Number : " + loginController.sucessfulAccountNo);
         } catch (SQLException ex) {
-            Logger.getLogger(depositController.class.getName()).log(Level.SEVERE, null, ex);
+            StringWriter sw = new StringWriter();
+            ex.printStackTrace(new PrintWriter(sw));
+            
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Your Deposit Request Caused An Error!");
+            alert.getDialogPane().setExpandableContent(new ScrollPane(new TextArea(sw.toString())));
+            alert.showAndWait();
         }
-        infoBox("Ammount Deposited", "Your deposit has been succesful!", "You have successfully deposited K" + txtDepositAmount.getText().trim() + " into Account Number : " + loginController.sucessfulAccountNo);
     }
     
     //Add listeners to the deposit text field
     private void addListeners(){
         txtDepositAmount.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.matches("([1-9][0-9]*)?")) {
+            if (newValue.matches("\\d{0,11}([\\.]\\d{0,2})?")) {
                 txtDepositAmount.setText(newValue);
             } else {
                 txtDepositAmount.setText(oldValue);
