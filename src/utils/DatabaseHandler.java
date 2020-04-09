@@ -28,6 +28,7 @@ public class DatabaseHandler {
         getConnection();
         setUpAccountHolderTable();
         setUpAccountTable();
+        setUpTransactionTable();
     }
 
     //The createConnection method returns a Connection obj and is responsiblre for creating a coonection to the db
@@ -101,7 +102,44 @@ public class DatabaseHandler {
                             + " (account_number VARCHAR(11) primary key,"
                             + " pin VARCHAR(4),"
                             + " balance DOUBLE UNSIGNED,"
-                            + " holder_nrc_number VARCHAR(15))");
+                            + " holder_nrc_number VARCHAR(15),"
+                            + " active BOOLEAN)");
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    //This method sets up the account table
+    protected static final void setUpTransactionTable() {
+        //We save the table to a String variable
+        final String TABLE_NAME = "atm.transaction";
+        
+        try {
+            //Creating a statement to execute in our db
+            stmt = con.createStatement();
+
+            //DatabaseMetaData Allows us to gather db meta data such as  informstion about tables, views, column types, results sets, stored procedures etc
+            DatabaseMetaData dbmd = con.getMetaData();
+            try (
+                //The folling command checks to see if there are any tables in the db with the same name as TABLE_NAME
+                ResultSet tables = dbmd.getTables(null, "atm", TABLE_NAME, null)) {
+
+                //If there is already a table in the db with the same name as TABLE_NAME...
+                if(tables.next()){
+                    //System.out.println("Table " + TABLE_NAME + " already exists...");
+                }else{
+                    //If the table doesnt exist create a table w/ name TABLE_NAME and the following columns
+                    stmt.execute("CREATE TABLE " + TABLE_NAME
+                            + " (id INT(11) auto_increment primary key,"
+                            + " date DATE not null,"   
+                            + " description VARCHAR(15) not null,"   
+                            + " account_number VARCHAR(15) not null,"     
+                            + " ref_account VARCHAR(15),"         
+                            + " deposit DOUBLE,"
+                            + " withdrawal DOUBLE,"
+                            + " balance DOUBLE)");
                 }
             }
         } catch (SQLException ex) {

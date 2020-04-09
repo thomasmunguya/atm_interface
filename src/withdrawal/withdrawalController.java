@@ -1,4 +1,4 @@
-package deposit;
+package withdrawal;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -21,24 +21,23 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-import utils.Account;
 import login.loginController;
+import utils.Account;
 import utils.DatabaseHandler;
 import utils.Transaction;
- 
+
 /**
- * 
+ *
  * @author DividedByZeRo
  * 
  */
-public class depositController implements Initializable {
-    
+public class withdrawalController implements Initializable {
+
     @FXML
     private AnchorPane anchorPane;
 
     @FXML
-    private Label lblDeposit;
+    private Label lblWithdraw;
 
     @FXML
     private Label lblAccInfo;
@@ -56,9 +55,9 @@ public class depositController implements Initializable {
     private Button cancelBtn;
 
     @FXML
-    private TextField txtDepositAmount;
-    
-    Stage stage;
+    private TextField txtWithdrawalAmount;
+
+    private Account account;
     private Transaction transaction;
     private loginController login;
     DatabaseHandler dbhandler;
@@ -71,12 +70,11 @@ public class depositController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try {
             setAccountInfo();
-        }catch(SQLException ex) {
-            Logger.getLogger(depositController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(withdrawalController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        dbhandler = new DatabaseHandler();
         addListeners();
-    }    
+    }
     
     @FXML
     void confirmBox(MouseEvent event) throws SQLException {
@@ -87,7 +85,7 @@ public class depositController implements Initializable {
         }else{
             confirmBtn.setDisable(false);
             updateBalance();
-            txtDepositAmount.clear();
+            txtWithdrawalAmount.clear();
         }
     }
     
@@ -110,7 +108,7 @@ public class depositController implements Initializable {
                 lblAccNo.setText(loginController.sucessfulAccountNo);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(depositController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(withdrawalController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -119,40 +117,41 @@ public class depositController implements Initializable {
         con = DatabaseHandler.getConnection();
         
         //Query
-        String sql = "UPDATE atm.account SET balance = balance + " + txtDepositAmount.getText().trim() + " WHERE account_number = '" + loginController.sucessfulAccountNo + "'";
+        String sql = "UPDATE atm.account SET balance = balance - " + txtWithdrawalAmount.getText().trim() + " WHERE account_number = '" + loginController.sucessfulAccountNo + "'";
         try {
             stmt = con.createStatement();
             stmt.executeUpdate(sql);
-            transaction = new Transaction(loginController.sucessfulAccountNo, "DEPOSIT");
-            transaction.setDeposit(Double.parseDouble(txtDepositAmount.getText().trim()));
-            transaction.setBalance(Double.parseDouble(txtDepositAmount.getText().trim()));
+            transaction = new Transaction(loginController.sucessfulAccountNo, "WITHDRAWAL");
+            transaction.setWithdrawal(Double.parseDouble(txtWithdrawalAmount.getText().trim()));
+            transaction.setBalance(Double.parseDouble(txtWithdrawalAmount.getText().trim()));
             loginController.transactionNumber = transaction.getId();
             con.close();
-            infoBox("Ammount Deposited", "Your deposit has been succesful!", "You have successfully deposited K" + txtDepositAmount.getText().trim() + " into Account Number : " + loginController.sucessfulAccountNo);
+            infoBox("Ammount Withdrawn", "Your withdrawal has been succesful!", "You have successfully withdrawn K" + txtWithdrawalAmount.getText().trim() + " into Account Number : " + loginController.sucessfulAccountNo);
         } catch (SQLException ex) {
             StringWriter sw = new StringWriter();
             ex.printStackTrace(new PrintWriter(sw));
             
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("Your Deposit Request Caused An Error!");
+            alert.setHeaderText("Your Withdrawal Request Caused An Error!");
             alert.getDialogPane().setExpandableContent(new ScrollPane(new TextArea(sw.toString())));
             alert.showAndWait();
         }
     }
     
-    //Add listeners to the deposit text field
+    //Add listeners to the withdraw text field the max amount a user can withdrawal is Kxxxx and so we have setup a textfield to implement that
     private void addListeners(){
-        txtDepositAmount.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.matches("\\d{0,11}([\\.]\\d{0,2})?")) {
-                txtDepositAmount.setText(newValue);
+        txtWithdrawalAmount.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.matches("\\d{0,4}([\\.]\\d{0,2})?")) {
+                txtWithdrawalAmount.setText(newValue);
             } else {
-                txtDepositAmount.setText(oldValue);
+                txtWithdrawalAmount.setText(oldValue);
             }
         });    
-    }
+    }    
     
+    //Check if fields are empty
     private boolean areFieldsEmpty(){
-        return txtDepositAmount.getText().trim() == null;
+        return txtWithdrawalAmount.getText().trim() == null;
     }
     
     //Method to display an alert box to inform the user of confirmation

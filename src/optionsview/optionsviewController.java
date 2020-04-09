@@ -42,7 +42,13 @@ public class optionsviewController implements Initializable {
     private Button balanceTransferBtn;
     
     @FXML
-    private Button withdrawBtn;
+    private Button withdrawalBtn;
+    
+    @FXML
+    private Button balanceInquiryBtn;
+    
+    @FXML
+    private Button billingBtn;
     
     @FXML
     private Button cancelBtn;
@@ -60,8 +66,8 @@ public class optionsviewController implements Initializable {
     }
     
     @FXML
-    void withdrawBtn(MouseEvent event) throws IOException {
-        loadWithdraw();
+    void withdrawalBtn(MouseEvent event) throws IOException {
+        loadWithdrawal();
     }
     
     @FXML
@@ -72,6 +78,11 @@ public class optionsviewController implements Initializable {
     @FXML
     void balanceInquiryBtn(MouseEvent event)  throws IOException {
         loadBalanceInquiry();
+    }
+    
+    @FXML
+    void billingBtn(MouseEvent event) throws IOException {
+        loadBilling();
     }
     
     @FXML
@@ -127,16 +138,16 @@ public class optionsviewController implements Initializable {
     }
     
     //This method loads the withdraw page
-    private void loadWithdraw() throws IOException{
+    private void loadWithdrawal() throws IOException{
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
-        AnchorPane anchorPane = FXMLLoader.<AnchorPane>load(getClass().getResource("/withdraw/withdraw.fxml"));
-        anchorPane.getStylesheets().add(getClass().getResource("/assets/css/withdraw.css").toExternalForm());
+        AnchorPane anchorPane = FXMLLoader.<AnchorPane>load(getClass().getResource("/withdrawal/withdrawal.fxml"));
+        anchorPane.getStylesheets().add(getClass().getResource("/assets/css/withdrawal.css").toExternalForm());
         Scene scene = new Scene(anchorPane, 600, 400);
             
         window.setScene(scene);
         window.centerOnScreen();
-        window.setTitle("Withdraw");
+        window.setTitle("Withdrawal");
         window.setResizable(false);
         window.setOnCloseRequest(e -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -216,13 +227,34 @@ public class optionsviewController implements Initializable {
         window.show();
     }
     
-    private void makeFadeIn(){
-        FadeTransition fade = new FadeTransition();
-        fade.setDuration(Duration.millis(500));
-        fade.setNode(rootAnchorPane);
-        fade.setFromValue(0);
-        fade.setToValue(1);
-        fade.play();
+    //This method loads the billing page
+    private void loadBilling() throws IOException{
+        Stage window = new Stage();
+        window.initModality(Modality.APPLICATION_MODAL);
+        AnchorPane anchorPane = FXMLLoader.<AnchorPane>load(getClass().getResource("/billing/billing.fxml"));
+        anchorPane.getStylesheets().add(getClass().getResource("/assets/css/billing.css").toExternalForm());
+        Scene scene = new Scene(anchorPane, 600, 400);
+            
+        window.setScene(scene);
+        window.centerOnScreen();
+        window.setTitle("Billing");
+        window.setResizable(false);
+        window.setOnCloseRequest(e -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Exit Request");
+            alert.setHeaderText(null);
+            alert.setContentText("Äre you sure you want to exit the window?");
+                
+            ButtonType okButtonType = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
+                
+            Optional<ButtonType> result = alert.showAndWait();
+            if(result.isPresent() && result.get() == okButtonType){
+                window.close();
+            }else if (result.isPresent() && result.get() == ButtonType.CANCEL) {
+                e.consume();
+            }
+        });
+        window.show();
     }
     
     //A method to test using Transition animations into the sign-up page

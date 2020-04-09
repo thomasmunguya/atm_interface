@@ -11,9 +11,9 @@
    <children>
       <HBox fx:id="topHBox" alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="720.0" spacing="10.0" stylesheets="@../assets/css/login.css">
          <children>
-            <Button fx:id="withdrawBtn" contentDisplay="TOP" mnemonicParsing="false" onMouseClicked="#withdrawBtn" prefHeight="25.0" prefWidth="150.0" styleClass="buttons" stylesheets="@../assets/css/optionsview.css" text="Money Withdraw">
+            <Button fx:id="withdrawalBtn" contentDisplay="TOP" mnemonicParsing="false" onMouseClicked="#withdrawalBtn" prefHeight="25.0" prefWidth="150.0" styleClass="buttons" stylesheets="@../assets/css/optionsview.css" text="Money Withdrawal">
                <graphic>
-                  <ImageView fitHeight="80.0" fitWidth="80.0" onMouseClicked="#withdrawBtn" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="80.0" fitWidth="80.0" onMouseClicked="#withdrawalBtn" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../assets/icons/icons8_Receive_Cash_100px.png" />
                      </image>
@@ -45,7 +45,7 @@
       </HBox>
       <HBox fx:id="botHBox" alignment="TOP_CENTER" layoutY="200.0" prefHeight="200.0" prefWidth="720.0" spacing="10.0">
          <children>
-            <Button fx:id="balanceInquiryBtn" contentDisplay="TOP" mnemonicParsing="false" onMouseClicked="#balanceInquiryBtn" prefHeight="25.0" prefWidth="150.0" styleClass="buttons" stylesheets="@../assets/css/optionsview.css" text="Balance Enquiry">
+            <Button fx:id="balanceInquiryBtn" contentDisplay="TOP" mnemonicParsing="false" onMouseClicked="#balanceInquiryBtn" prefHeight="25.0" prefWidth="150.0" styleClass="buttons" stylesheets="@../assets/css/optionsview.css" text="Balance Inquiry">
                <graphic>
                   <ImageView fitHeight="80.0" fitWidth="80.0" onMouseClicked="#balanceInquiryBtn" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -54,9 +54,9 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button contentDisplay="TOP" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" styleClass="buttons" stylesheets="@../assets/css/optionsview.css" text="Billing">
+            <Button fx:id="billingBtn" contentDisplay="TOP" mnemonicParsing="false" onMouseClicked="#billingBtn" prefHeight="25.0" prefWidth="150.0" styleClass="buttons" stylesheets="@../assets/css/optionsview.css" text="Billing">
                <graphic>
-                  <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="80.0" fitWidth="80.0" onMouseClicked="#billingBtn" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../assets/icons/icons8_purchase_order_100px.png" />
                      </image>

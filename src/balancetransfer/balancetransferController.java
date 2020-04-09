@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package balancetransfer;
 
-import deposit.depositController;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
@@ -31,11 +25,12 @@ import javafx.stage.Stage;
 import login.loginController;
 import utils.Account;
 import utils.DatabaseHandler;
-import withdraw.withdrawController;
+import utils.Transaction;
 
 /**
  *
  * @author ZeRo
+ * 
  */
 public class balancetransferController implements Initializable {
 
@@ -71,6 +66,7 @@ public class balancetransferController implements Initializable {
     
     Stage stage;
     private Account account;
+    private Transaction transaction;
     private loginController login;
     DatabaseHandler dbhandler;
     private Connection con = null;
@@ -161,6 +157,11 @@ public class balancetransferController implements Initializable {
                 try {
                     stmt = con.createStatement();
                     stmt.executeUpdate(sql1);
+                    transaction = new Transaction(loginController.sucessfulAccountNo, "TRANSFER");
+                    transaction.setReferenceAccount(txtRecipientAcc.getText().trim());
+                    transaction.setWithdrawal(Double.parseDouble(txtTransferAmount.getText().trim()));
+                    transaction.setBalance(Double.parseDouble(txtTransferAmount.getText().trim()));
+                    loginController.transactionNumber = transaction.getId();
                 } catch (SQLException ex) {
                     StringWriter sw = new StringWriter();
                     ex.printStackTrace(new PrintWriter(sw));
@@ -176,6 +177,11 @@ public class balancetransferController implements Initializable {
                 try {
                     stmt = con.createStatement();
                     stmt.executeUpdate(sql2);
+                    transaction = new Transaction(txtRecipientAcc.getText().trim(), "TRANSFER");
+                    transaction.setReferenceAccount(loginController.sucessfulAccountNo);
+                    transaction.setDeposit(Double.parseDouble(txtTransferAmount.getText().trim()));
+                    transaction.setBalance(Double.parseDouble(txtTransferAmount.getText().trim()));
+                    loginController.transactionNumber = transaction.getId();
                     con.close();
                 }catch (SQLException ex) {
                     StringWriter sw = new StringWriter();

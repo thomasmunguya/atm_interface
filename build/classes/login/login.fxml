@@ -28,7 +28,7 @@
    <center>
       <Pane fx:id="rightPane" prefHeight="400.0" prefWidth="350.0" styleClass="rightPane" stylesheets="@/assets/css/login.css" BorderPane.alignment="TOP_LEFT">
          <children>
-            <Label fx:id="lblError" alignment="CENTER" layoutX="60.0" layoutY="294.0" prefHeight="20.0" prefWidth="230.0" styleClass="lblError" stylesheets="@/assets/css/login.css" />
+            <Label fx:id="lblError" alignment="CENTER" layoutX="60.0" layoutY="289.0" prefHeight="79.0" prefWidth="230.0" styleClass="lblError" stylesheets="@/assets/css/login.css" />
             <Button fx:id="signupBtn" alignment="BOTTOM_LEFT" contentDisplay="RIGHT" layoutX="60.0" layoutY="366.0" mnemonicParsing="false" onMouseClicked="#loadSignUp" opacity="0.75" prefHeight="30.0" prefWidth="230.0" styleClass="signupBtn" stylesheets="@../assets/css/login.css" text="Don't have an account? Sign up" />
             <MaterialDesignIconView fx:id="icon" glyphName="ARROW_RIGHT" layoutX="254.0" layoutY="391.0" onMouseClicked="#loadSignUp" styleClass="iconSize" wrappingWidth="24.0" />
             <ImageView fitHeight="38.0" fitWidth="77.0" layoutX="156.0" layoutY="105.0" pickOnBounds="true" preserveRatio="true">

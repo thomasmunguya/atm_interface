@@ -21,12 +21,15 @@ public class Account {
     private String accNumber;
     private String pin;
     private double balance;
-    
+    private int active;
+
+    private static final String TABLE_NAME = "atm.account";
     private static final String NRC_COL = "holder_nrc_number";
     private static final String ACC_NUMBER_COL = "account_number";
     private static final String PIN_COL = "pin";
     private static final String BALANCE_COL = "balance";
-    private static final String TABLE_NAME = "atm.account";
+    private static final String ACTIVE_COL = "active";
+    
     private static Connection con = null;
     private static Statement stmt = null;
     private static PreparedStatement pStmt = null;
@@ -39,6 +42,7 @@ public class Account {
         this.nrcNumber = storeOrUpdateNRCNumber(nrcNumber, generatedAccNumber);
         this.pin = storeOrUpdatePin(generatePin(), generatedAccNumber);
         this.balance = storeOrUpdateBalance(0, generatedAccNumber);
+        this.active = storeOrUpdateActive(1, generatedAccNumber);
     }
     
     public String getNrcNumber() throws SQLException{
@@ -71,6 +75,14 @@ public class Account {
 
     public void setBalance(double balance) throws SQLException{
         this.balance = storeOrUpdateBalance(balance, this.accNumber);
+    }
+    
+    public int getActive() {
+        return active;
+    }
+
+    public void setActive(int active) {
+        this.active = active;
     }
     
     //Retrieve the property specified by column name by the account number
@@ -109,13 +121,14 @@ public class Account {
                 //If account number already exists then generate another account number and store it
                 accNumber = generateAccountNumber();
             }else{
-                String sql1 = "INSERT INTO " + TABLE_NAME + " (account_number, pin, balance, holder_nrc_number) VALUES (?,?,?,?)";
+                String sql1 = "INSERT INTO " + TABLE_NAME + " (account_number, pin, balance, holder_nrc_number, active) VALUES (?,?,?,?,?)";
                 try {
                     pStmt = con.prepareStatement(sql1);
                     pStmt.setString(1, accNumber);
                     pStmt.setNull(2, Types.VARCHAR);
                     pStmt.setNull(3, Types.DOUBLE);
                     pStmt.setNull(4, Types.VARCHAR);
+                    pStmt.setInt(5, 1);
                     pStmt.executeUpdate();
                     con.close();
                 } catch (SQLException ex) {
@@ -174,6 +187,22 @@ public class Account {
             Logger.getLogger(signupController.class.getName()).log(Level.SEVERE, null, e);
         }
         return balance;
+    }
+    
+    //Store or update the account's nrc to the database and return it
+    private int storeOrUpdateActive(int active, String accNumber) throws SQLException{
+        con = DatabaseHandler.getConnection();
+        
+        //MySQL Query
+        String sql = "UPDATE " + TABLE_NAME + " SET " + ACTIVE_COL + " = " + active + " WHERE " + ACC_NUMBER_COL + " = '" + accNumber + "'";
+        try {
+            stmt = con.createStatement();
+            stmt.executeUpdate(sql);
+            con.close();
+        } catch (SQLException e) {
+            Logger.getLogger(signupController.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return active;
     }
     
     //This method generates a random 11-digit account number

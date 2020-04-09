@@ -4,6 +4,7 @@ package login;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -73,6 +74,9 @@ public class loginController extends DatabaseHandler implements Initializable{
 
     @FXML
     private Label dateAndTimeLbl;
+    
+    @FXML
+    private MaterialDesignIconView icon;
 
     private Stage stage;
     private DatabaseHandler dbHandler;
@@ -80,6 +84,8 @@ public class loginController extends DatabaseHandler implements Initializable{
     private PreparedStatement stmt = null;
     private ResultSet rs = null;
     public static String sucessfulAccountNo;
+    public static int transactionNumber;
+    private int attempts = 3;
 
     //This is the first method to be executed when the class is initialised
     @Override
@@ -92,7 +98,31 @@ public class loginController extends DatabaseHandler implements Initializable{
 
      @FXML
     void loadSignIn(MouseEvent event) {
-        signIn();
+        //Modified the login page to only allow 3 login attempts which if still unsuccesful afterwards disables all the buttons in the window  
+        boolean loggedIn = signIn();
+        attempts--;
+        if(loggedIn == false){
+            switch (attempts) {
+            case 2:
+                lblError.setTextFill(javafx.scene.paint.Color.RED);
+                lblError.setText("Incorrect Account Number/Pin... \n" + Integer.toString(attempts) + " attempts left");
+                break;
+            case 1:
+                lblError.setTextFill(javafx.scene.paint.Color.RED);
+                lblError.setText("Incorrect Account Number/Pin... \n" + Integer.toString(attempts) + " attempt left");
+                break;
+            default:
+                lblError.setText("You have exceeded 3 login attempts.\nTry again after a while");
+                txtAccNo.clear();
+                txtPin.clear();
+                txtAccNo.setDisable(true);
+                txtPin.setDisable(true);
+                signinBtn.setDisable(true);
+                signupBtn.setDisable(true);
+                icon.setDisable(true);
+                break;
+            }
+        }
     }
 
     @FXML
@@ -100,12 +130,11 @@ public class loginController extends DatabaseHandler implements Initializable{
         makeFadeOutIntoSignUp();
     }
     
-    /*Method to signIn into the db or display an error msg if an unsuccessful attempt is made
-      The method has to be changed in the final project because this method was only used for testing purposes*/
-    private void signIn(){
+    //Method to signIn into the db or display an error msg if an unsuccessful attempt is made. Only 3 attempts are allowedto be made
+    private boolean signIn(){
         con = DatabaseHandler.getConnection();
         //Query
-        String sql = "SELECT * FROM atm.account WHERE account_number = ? and pin = ?;";
+        String sql = "SELECT * FROM atm.account WHERE account_number = ? AND pin = ? AND active = 1;";
         try {
             stmt = con.prepareStatement(sql);
             stmt.setString(1, txtAccNo.getText().trim());
@@ -114,13 +143,13 @@ public class loginController extends DatabaseHandler implements Initializable{
             if(rs.next()) {
                 sucessfulAccountNo = txtAccNo.getText().trim();
                 makeFadeOutIntoOptions();
-            }else{
-                lblError.setTextFill(javafx.scene.paint.Color.RED);
-                lblError.setText("Incorrect Username/Password...");
+            }else{ 
+                return false;
             }
         } catch (SQLException ex) {
             Logger.getLogger(loginController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return true;
     }
     
     //This method loads the Options View
